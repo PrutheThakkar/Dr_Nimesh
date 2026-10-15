@@ -1,0 +1,622 @@
+/* Image and overlay share coordinates so sparkles stay aligned on resize. */
+.hero { position: relative; isolation: isolate; overflow: hidden; background: #f8f7f2; }
+.hero__image { width: 100%; height: auto; }
+.hero__sparkles { position: absolute; inset: 0; pointer-events: none; }
+.hero__sparkle {
+  position: absolute;
+  width: var(--sparkle-size);
+  height: var(--sparkle-size);
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, #fff2cf 20%, #ffac48 45%, transparent 72%);
+  box-shadow: 0 0 18px 4px #ffa64055;
+  opacity: 0;
+  animation: hero-twinkle 4.8s ease-in-out infinite;
+  animation-delay: var(--sparkle-delay);
+  will-change: transform, opacity;
+}
+.hero__sparkle::before, .hero__sparkle::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  background: linear-gradient(90deg, transparent, #fff9e5, transparent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.hero__sparkle::before { width: 230%; height: 2px; }
+.hero__sparkle::after { width: 2px; height: 230%; background: linear-gradient(transparent, #fff9e5, transparent); }
+@keyframes hero-twinkle {
+  0%, 65%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+  30% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.15); }
+  45% { opacity: 0.35; transform: translate(-50%, -50%) scale(0.8); }
+}
+@media (max-width: 600px) {
+  .hero__sparkle { width: calc(var(--sparkle-size) * 0.65); height: calc(var(--sparkle-size) * 0.65); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__sparkle { animation: none; opacity: 0; will-change: auto; }
+}
+
+body { color: #302f29; font-family: "Century Gothic", "Avenir Next", Arial, sans-serif; background: #f8f4ec; }
+.hero { min-height: 640px; }
+.hero__image { position: relative; z-index: -1; }
+.site-header { position: absolute; z-index: 2; top: 3.4%; left: 5.5%; right: 5.5%; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.brand { display: flex; align-items: center; gap: 22px; color: #ff6415; font-size: clamp(14px, 1vw, 20px); line-height: 1.15; white-space: nowrap; }
+.brand__mark { width: 62px; height: 62px; }
+.brand small { display: block; color: #ffb05d; font-size: 0.8em; }
+.site-nav { display: flex; gap: 10px; align-items: center; }
+.site-nav a { border: 2px solid white; padding: 10px 32px; font-size: clamp(13px, 0.9vw, 18px); background: #f8f4ec88; white-space: nowrap; }
+.site-nav .button--primary { background: #ff6415; }
+.hero__content { position: absolute; z-index: 1; top: 22%; left: 5%; right: 5%; text-align: center; }
+.hero__content h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(40px, 2.5vw, 56px); font-weight: 400; line-height: 1.3; }
+.hero__content h1 span { color: #ff6415; }
+.hero__content p { margin: 22px auto 20px; max-width: 900px; font-size: clamp(15px, 1vw, 22px); line-height: 1.3; color: #55544e; }
+.hero__actions { display: flex; justify-content: center; gap: 20px; }
+.button { display: inline-flex; align-items: center; justify-content: center; padding: 11px 38px; font-size: clamp(14px, 0.9vw, 16px); }
+.button--primary { background: #ff6415; color: white; border: 2px solid #ff6415; }
+.button--outline { border: 2px solid #ff6415; background: #f8f4ec; }
+.button:hover { filter: brightness(0.94); }
+@media (max-width: 1100px) {
+  .site-nav a { padding: 9px 14px; }
+  .brand { gap: 10px; }
+  .brand__mark { width: 48px; height: 48px; }
+}
+@media (max-width: 760px) {
+  .hero { min-height: 760px; }
+  .hero__image { position: absolute; bottom: 0; width: 100%; }
+  .hero__sparkles { top: auto; bottom: 0; aspect-ratio: 1920 / 1197; }
+  .site-header { top: 20px; flex-direction: column; gap: 18px; }
+  .site-nav { flex-wrap: wrap; justify-content: center; gap: 6px; }
+  .site-nav a { padding: 7px 12px; font-size: 12px; }
+  .hero__content { top: 205px; left: 6%; right: 6%; }
+  .hero__content h1 { font-size: clamp(28px, 6vw, 40px); }
+  .hero__content p { line-height: 1.5; }
+  .desktop-break { display: none; }
+  .hero__actions { flex-wrap: wrap; gap: 10px; }
+  .button { padding: 11px 22px; }
+}
+
+/* Slow, layered movement for the orange artwork and dotted ribbons. */
+.hero__image {
+  transform-origin: 50% 85%;
+  animation: hero-artwork-sway 14s ease-in-out infinite alternate;
+}
+.hero__waves {
+  position: absolute;
+  inset: auto -4% -3% -4%;
+  height: 45%;
+  pointer-events: none;
+  overflow: hidden;
+}
+.hero__waves svg { width: 100%; height: 100%; overflow: visible; }
+.hero__wave { transform-origin: center; animation: hero-wave-flow 11s ease-in-out infinite alternate; opacity: 0.5; }
+.hero__wave--two { animation-duration: 16s; animation-delay: -7s; opacity: 0.3; }
+.hero__sparkles { animation: hero-spots-drift 10s ease-in-out infinite alternate; }
+@keyframes hero-artwork-sway {
+  from { transform: scale(1.025) translate(-0.5%, 0); }
+  to { transform: scale(1.045) translate(0.5%, 0.8%); }
+}
+@keyframes hero-wave-flow {
+  from { transform: translate(-25px, 18px) rotate(-1deg) scaleY(0.92); }
+  to { transform: translate(25px, -18px) rotate(1deg) scaleY(1.08); }
+}
+@keyframes hero-spots-drift {
+  from { transform: translate(-4px, 5px); }
+  to { transform: translate(6px, -7px); }
+}
+@media (max-width: 760px) {
+  .hero__waves { height: 25%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__image, .hero__wave, .hero__sparkles { animation: none; transform: none; }
+}
+
+/* Home page introduction. */
+.about-section { position: relative; overflow: hidden; padding: clamp(48px, 4.4vw, 90px) 0 clamp(64px, 7vw, 140px); background: #f7f3eb; scroll-margin-top: 24px; }
+.container { width: 89%; max-width: 1800px; margin-inline: auto; }
+.about-section__content { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.85fr); gap: clamp(36px, 5vw, 104px); align-items: start; }
+.about-section__portrait { width: 100%; aspect-ratio: 0.96; object-fit: cover; object-position: center top; }
+.about-section__portrait--placeholder { display: flex; align-items: end; padding: 32px; background: linear-gradient(135deg, #dadfd3, #f7f3eb 85%); color: #55544e; }
+.about-section__portrait--placeholder span { font-family: Georgia, serif; font-size: 26px; }
+.about-section__portrait--placeholder small { display: block; margin-top: 8px; font: 14px "Avenir Next", Arial, sans-serif; }
+.about-section__bio h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; font-size: clamp(32px, 2.6vw, 54px); line-height: 1.2; margin-bottom: clamp(28px, 2.8vw, 58px); }
+.about-section__bio h2 span { color: #ff6415; }
+.about-section__intro { --font-size-paragraph: 22px; font-size: var(--font-size-paragraph); line-height: 1.5; color: #898780; }
+@media (max-width: 1024px) {
+  .about-section__intro { --font-size-paragraph: 20px; }
+}
+@media (max-width: 600px) {
+  .about-section__intro { --font-size-paragraph: 18px; }
+}
+.about-section__intro p + p { margin-top: clamp(16px, 1.2vw, 24px); }
+.about-section__intro p:first-child { color: #4d4c46; }
+.about-section__highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(18px, 2vw, 42px); margin-top: clamp(36px, 5.4vw, 110px); }
+.about-section__highlights li { display: flex; align-items: center; gap: 18px; font-size: clamp(14px, 1.05vw, 21px); line-height: 1.25; color: #4d4c46; }
+.about-section__highlights svg { flex: 0 0 32px; width: 32px; height: 32px; color: #191914; }
+.about-section__decoration { position: absolute; bottom: -70px; left: 18%; width: 36%; color: #aaa79e; opacity: 0.22; pointer-events: none; }
+@media (max-width: 1100px) {
+  .about-section__highlights { grid-template-columns: 1fr; margin-top: 32px; gap: 20px; }
+}
+@media (max-width: 760px) {
+  .about-section__content { grid-template-columns: 1fr; gap: 32px; }
+  .about-section__portrait { max-width: 440px; margin-inline: auto; aspect-ratio: 1; }
+  .about-section__bio h2 { margin-bottom: 24px; }
+  .about-section__highlights li { font-size: 16px; }
+  .about-section__decoration { width: 85%; left: 10%; opacity: 0.14; }
+}
+
+/* Care philosophy section. */
+.care-section { position: relative; isolation: isolate; background: #f7f3eb; padding-block: 0 clamp(96px, 9vw, 180px); }
+.care-section__content { position: relative; z-index: 1; }
+.care-section h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; font-size: clamp(30px, 2.6vw, 54px); line-height: 1.18; }
+.care-section h2 span { color: #ff6415; }
+.care-section__copy { --font-size-paragraph: 22px; width: 88%; max-width: 1100px; margin-left: auto; margin-top: clamp(64px, 5.8vw, 120px); text-align: right; font-size: var(--font-size-paragraph); line-height: 1.5; color: #898780; }
+@media (max-width: 1024px) {
+  .care-section__copy { --font-size-paragraph: 20px; }
+}
+@media (max-width: 600px) {
+  .care-section__copy { --font-size-paragraph: 18px; }
+}
+
+.care-section__art { position: absolute; z-index: 0; top: -4vw; left: -21%; width: 60%; max-width: none; height: calc(100% + 4vw); object-fit: fill; mask-image: linear-gradient(to right, #000 75%, transparent 100%); pointer-events: none; }
+@media (max-width: 1100px) {
+  .care-section__copy { width: 92%; }
+}
+@media (max-width: 760px) {
+  .care-section h2 { font-size: clamp(28px, 6vw, 40px); }
+  .care-section__copy { width: 100%; margin-top: 36px; text-align: left; line-height: 1.6; }
+  .care-section__copy p + p { margin-top: 18px; }
+  .care-section { overflow: hidden; padding-block: 0 96px; }
+  .care-section__art { top: 0; left: -65%; width: 115%; height: 100%; opacity: 0.6; }
+}
+
+/* Scroll reading with a grey-to-black color transition. */
+.care-section__copy .reading-word { display: inline-grid; vertical-align: baseline; color: #96938b; }
+.reading-word__space, .reading-word__text { grid-area: 1 / 1; }
+.care-section__copy .reading-word__space { visibility: hidden; font-weight: 400; }
+.care-section__copy .reading-word__text { color: inherit; font-weight: 400; transition: color 160ms ease; }
+.care-section__copy .reading-word.is-read { color: #000; }
+.reading-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .care-section__copy .reading-word__text { transition: none; }
+}
+
+/* Expertise cards: the title rises as the description and action unfold. */
+.expertise-section { background: #2e2d27; color: #f7f3eb; padding-block: clamp(64px, 6vw, 120px) clamp(80px, 11vw, 220px); }
+.expertise-section h2 { text-align: center; font: 400 clamp(32px, 2.6vw, 54px)/1.2 Georgia, "Times New Roman", serif; margin-bottom: clamp(36px, 3vw, 64px); }
+.expertise-section h2 span { color: #ff6415; }
+.expertise-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: clamp(16px, 1.3vw, 28px); }
+.expertise-card { position: relative; overflow: hidden; isolation: isolate; min-height: clamp(280px, 23.3vw, 470px); background-color: #ff781c; color: #302f29; display: flex; align-items: flex-end; }
+.expertise-card::before { content: ""; position: absolute; inset: 0; z-index: -2; background-size: cover; background-position: center; background-repeat: no-repeat; transition: transform 650ms ease; }
+.expertise-card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, #f7f3eb 0%, #f7f3ebdd 10%, transparent 55%); }
+.expertise-card--brain { grid-row: span 2; }
+.expertise-card--brain::before { background-image: url("../images/brain_disorder-new.webp"); }
+.expertise-card--spine::before { background-image: url("../images/spine_disorders.webp"); }
+.expertise-card--trauma::before { background-image: url("../images/trauma_and_emergency_care.webp"); }
+.expertise-card__content { width: 100%; padding: clamp(24px, 1.8vw, 38px); }
+.expertise-card h3 { font-size: clamp(22px, 1.6vw, 34px); font-weight: 600; line-height: 1.2; }
+.expertise-card__reveal { display: grid; grid-template-rows: 0fr; opacity: 0; visibility: hidden; transition: grid-template-rows 450ms ease, opacity 350ms ease, visibility 450ms; }
+.expertise-card__details { min-height: 0; overflow: hidden; transform: translateY(18px); transition: transform 450ms ease; }
+.expertise-card p { font-size: clamp(16px, 1.35vw, 28px); line-height: 1.35; padding-top: 22px; }
+.expertise-card button { display: inline-block; margin-top: 26px; padding: 12px 36px; border: 2px solid #ff6415; background: #f7f3eb; color: #302f29; font: 600 clamp(16px, 1.1vw, 22px)/1.2 "Century Gothic", "Avenir Next", Arial, sans-serif; cursor: pointer; }
+.expertise-card--brain .expertise-card__reveal, .expertise-card:hover .expertise-card__reveal, .expertise-card:focus-within .expertise-card__reveal { grid-template-rows: 1fr; opacity: 1; visibility: visible; }
+.expertise-card--brain .expertise-card__details, .expertise-card:hover .expertise-card__details, .expertise-card:focus-within .expertise-card__details { transform: translateY(0); }
+.expertise-card:hover::before, .expertise-card:focus-within::before { scale: 1.04; }
+.expertise-card:focus-visible { outline: 3px solid #ff6415; outline-offset: 5px; }
+.expertise-card button:hover { background: #ff6415; color: #fff; }
+.expertise-card button:focus-visible { outline: 3px solid #302f29; outline-offset: 4px; }
+.expertise-dialog { position: fixed; inset: 0; margin: auto; width: min(640px, 90vw); max-height: 85svh; overflow: auto; padding: 48px 32px 32px; border: 0; background: #f7f3eb; color: #302f29; }
+.expertise-dialog::backdrop { background: #0009; }
+.expertise-dialog h2 { text-align: left; font-size: 30px; margin-bottom: 24px; }
+.expertise-dialog p, .expertise-dialog li { font-size: 18px; line-height: 1.5; }
+.expertise-dialog ul { list-style: disc; padding-left: 22px; margin-top: 22px; }
+.expertise-dialog__close { position: absolute; top: 8px; right: 14px; border: 0; background: transparent; font-size: 32px; cursor: pointer; }
+@media (max-width: 760px) {
+  .expertise-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+  .expertise-card--brain { grid-row: auto; min-height: 520px; }
+  .expertise-card { min-height: 380px; }
+}
+@media (hover: none) {
+  .expertise-card__reveal { grid-template-rows: 1fr; opacity: 1; visibility: visible; }
+  .expertise-card__details { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .expertise-card::before, .expertise-card__reveal, .expertise-card__details { transition: none; }
+}
+
+/* Questions about diagnosis and treatment. */
+.care-questions { position: relative; isolation: isolate; overflow: hidden; background: #2e2d27; color: #f7f3eb; padding-block: clamp(60px, 7vw, 140px) clamp(48px, 3.5vw, 72px); }
+
+.care-questions h2 { font: 400 clamp(30px, 2.6vw, 54px)/1.2 Georgia, "Times New Roman", serif; }
+.care-questions h2 span { color: #ff6415; }
+.care-questions__intro { font-size: clamp(18px, 1.25vw, 26px); line-height: 1.4; margin-top: clamp(32px, 3.3vw, 68px); }
+.care-questions__grid { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: clamp(16px, 1.3vw, 28px); margin-top: clamp(32px, 3vw, 62px); }
+.care-question { border: 2px solid #ff6415; background: #2e2d27; }
+.care-question h3 { font-weight: 400; }
+.care-question h3 button { display: flex; align-items: center; justify-content: space-between; gap: 24px; width: 100%; padding: clamp(20px, 1.4vw, 30px) clamp(20px, 1.2vw, 26px); color: inherit; background: transparent; border: 0; cursor: pointer; text-align: left; font: 400 clamp(16px, 1.05vw, 22px)/1.4 "Century Gothic", "Avenir Next", Arial, sans-serif; }
+.care-question__icon { position: relative; flex: 0 0 20px; width: 20px; height: 20px; }
+.care-question__icon::before, .care-question__icon::after { content: ""; position: absolute; background: currentColor; border-radius: 1px; }
+.care-question__icon::before { width: 20px; height: 2px; left: 0; top: 9px; }
+.care-question__icon::after { width: 2px; height: 20px; top: 0; left: 9px; transition: transform 250ms ease; }
+.care-question.is-open .care-question__icon::after { transform: scaleY(0); }
+.care-question__answer { display: grid; grid-template-rows: 0fr; visibility: hidden; opacity: 0; transition: grid-template-rows 350ms ease, opacity 250ms ease, visibility 350ms; }
+.care-question__answer > div { min-height: 0; overflow: hidden; }
+.care-question__answer p { padding: 0 clamp(20px, 1.2vw, 26px) 24px; font-size: clamp(16px, 1vw, 20px); line-height: 1.6; color: #e0ddd5; }
+.care-question.is-open .care-question__answer { grid-template-rows: 1fr; opacity: 1; visibility: visible; }
+.care-questions__summary { margin-top: clamp(36px, 3vw, 62px); text-align: center; font-size: clamp(17px, 1.25vw, 26px); line-height: 1.4; }
+.care-questions__read-all { display: block; margin: clamp(32px, 3vw, 62px) auto 0; padding: 12px 36px; border: 2px solid #ff6415; color: #302f29; background: #f7f3eb; cursor: pointer; font: 500 clamp(16px, 1vw, 20px)/1.2 "Century Gothic", "Avenir Next", Arial, sans-serif; }
+.care-questions__read-all:hover { background: #ff6415; color: #fff; }
+.care-question h3 button:focus-visible, .care-questions__read-all:focus-visible { outline: 3px solid #f7f3eb; outline-offset: 4px; }
+@media (max-width: 760px) {
+  .care-questions__grid { grid-template-columns: 1fr; }
+  .care-questions__summary br { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .care-question__answer, .care-question__icon::after { transition: none; }
+}
+
+/* Automatically advancing, swipeable conditions carousel. */
+.conditions-section { position: relative; isolation: isolate; overflow: hidden; background: #f7f3eb; padding-block: clamp(80px, 13vw, 260px) clamp(80px, 12vw, 240px); }
+.conditions-section::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -24vw;
+  right: -23vw;
+  width: 89%;
+  aspect-ratio: 1880 / 1361;
+  background: url("../images/neurosurgical-care-new.png") center / contain no-repeat;
+  opacity: 0.65;
+  pointer-events: none;
+}
+.conditions-section h2 { text-align: center; margin-bottom: clamp(32px, 3vw, 64px); font: 400 clamp(30px, 2.6vw, 54px)/1.2 Georgia, "Times New Roman", serif; }
+.conditions-section h2 span { color: #ff6415; }
+.conditions-section__slider { margin-left: 5.5%; }
+.conditions-section .swiper { overflow: visible; }
+.conditions-section .swiper-wrapper { align-items: stretch; }
+.conditions-section .swiper-slide { height: auto; }
+.condition-card { height: 100%; min-height: clamp(400px, 29vw, 580px); padding: clamp(26px, 2.7vw, 54px); border: 1px solid #ff6415; background: #f7f3eb; transition: background-color 400ms ease; }
+.swiper-slide-active .condition-card { background: linear-gradient(180deg, #ff9744 0%, #f7f3eb 100%); }
+.condition-card__icon { width: clamp(88px, 7vw, 140px); height: clamp(88px, 7vw, 140px); margin-bottom: clamp(46px, 5vw, 100px); }
+.condition-card h3 { min-height: 2.5em; margin-bottom: clamp(24px, 2vw, 40px); font-size: clamp(20px, 1.5vw, 30px); line-height: 1.2; font-weight: 600; }
+.condition-card p { font-size: clamp(16px, 1.2vw, 24px); line-height: 1.4; }
+.conditions-section__controls { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+.conditions-section__controls button { border: 1px solid #ff6415; background: transparent; color: #302f29; padding: 8px 16px; font: inherit; cursor: pointer; }
+.conditions-section__controls button:hover { background: #ff6415; }
+.conditions-section__controls button:disabled { opacity: 0.6; cursor: default; }
+.conditions-section__controls button:focus-visible { outline: 2px solid #302f29; outline-offset: 3px; }
+.recovery-footer { position: relative; isolation: isolate; overflow: hidden; background: #2e2d27; color: #e3e0d8; padding-block: clamp(64px, 6vw, 120px) clamp(64px, 5vw, 100px); }
+.recovery-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url("../images/neurosurgical-care-new.png") right center / cover no-repeat;
+  opacity: 0.28;
+  pointer-events: none;
+}
+.recovery-footer h2 { font: 400 clamp(30px, 2.6vw, 54px)/1.2 Georgia, "Times New Roman", serif; }
+.recovery-footer h2 span { color: #ff6415; }
+.recovery-footer__intro { max-width: 58%; }
+.recovery-footer__intro p { margin-top: clamp(32px, 3vw, 60px); font-size: clamp(17px, 1.25vw, 25px); line-height: 1.45; }
+.recovery-footer__booking { display: inline-block; margin-top: clamp(32px, 3vw, 60px); background: #ff6415; color: #fff; border: 2px solid #f7f3eb; padding: 12px 28px; font-size: clamp(14px, 1vw, 20px); }
+.recovery-footer__booking:hover { background: #e65308; }
+.recovery-footer__links { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 32px; width: 66%; margin-top: clamp(64px, 5.5vw, 110px); }
+.recovery-footer__links h3 { color: #ff6415; font-size: clamp(14px, 1vw, 20px); font-weight: 500; margin-bottom: 18px; }
+.recovery-footer__links a, .recovery-footer__links p { display: block; font-size: clamp(14px, 0.9vw, 18px); line-height: 1.5; margin-top: 12px; }
+.recovery-footer__links span { color: #ff6415; display: inline-block; margin-right: 12px; }
+.recovery-footer a:focus-visible { outline: 2px solid #ff6415; outline-offset: 4px; }
+.recovery-footer__links a:hover { color: #ff6415; }
+@media (max-width: 760px) {
+  .recovery-footer__intro, .recovery-footer__links { max-width: none; width: 100%; }
+  .recovery-footer__links { grid-template-columns: 1fr 1fr; }
+  .recovery-footer__links > div:last-child { grid-column: 1 / -1; }
+  .condition-card { padding: 28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .condition-card { transition: none; }
+}
+
+/* Full-width Expertise menu opens only while the pointer is over it. */
+.site-nav { align-self: stretch; }
+.expertise-menu { align-self: stretch; display: flex; align-items: center; }
+.expertise-menu__trigger { display: flex; align-items: center; gap: 14px; border: 2px solid white; padding: 10px 32px; font: inherit; font-size: clamp(13px, 0.9vw, 18px); color: inherit; background: #f8f4ec88; cursor: pointer; white-space: nowrap; }
+.expertise-menu__arrow { color: #ff6415; transform: rotate(180deg); transition: transform 180ms ease; }
+.expertise-menu__trigger[aria-expanded="true"] { border-bottom-color: #ffb58e; }
+.expertise-menu__trigger[aria-expanded="true"] .expertise-menu__arrow { transform: none; }
+.expertise-menu__panel { position: absolute; top: 100%; left: -6.18%; right: -6.18%; padding: clamp(44px, 4vw, 82px) 10.9% clamp(40px, 3vw, 64px); background: linear-gradient(180deg, #f8f4ec 0%, #f9d5b6 35%, #ff9645 100%); }
+.expertise-menu__panel[hidden] { display: none; }
+.expertise-menu__grid { display: grid; grid-template-columns: 2fr 1.25fr 0.65fr; gap: clamp(30px, 4vw, 82px); }
+.expertise-menu__grid h3 { margin-bottom: 30px; color: #ff6415; font-size: clamp(16px, 1vw, 21px); font-weight: 500; white-space: nowrap; }
+.expertise-menu__brain-links { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.site-nav .expertise-menu__panel a { display: block; padding: 8px 0; border: 0; background: transparent; color: #656057; font-size: clamp(14px, 0.9vw, 18px); white-space: normal; line-height: 1.4; }
+.expertise-menu__panel a + a { margin-top: 24px; }
+.site-nav .expertise-menu__panel a:hover { color: #ff6415; }
+@media (max-width: 1100px) {
+  .expertise-menu__trigger { padding: 9px 14px; }
+  .expertise-menu__panel { padding-inline: 6%; }
+  .expertise-menu__grid { gap: 24px; }
+  .expertise-menu__grid h3 { white-space: normal; }
+}
+@media (max-width: 760px) {
+  .expertise-menu__trigger { padding: 7px 12px; font-size: 12px; gap: 8px; }
+  .expertise-menu__panel { padding: 28px 6%; max-height: 65vh; overflow-y: auto; }
+  .expertise-menu__grid { grid-template-columns: 1fr; gap: 28px; }
+  .expertise-menu__grid h3 { margin-bottom: 14px; }
+  .expertise-menu__panel a + a { margin-top: 10px; }
+}
+
+/* Layout sizing follows content so larger text and narrow screens do not overlap. */
+.site-header__toggle { display: none; }
+.hero { min-height: clamp(680px, 62.35vw, 1197px); }
+.hero__image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center bottom; }
+.hero__content { position: relative; top: auto; left: auto; right: auto; width: 90%; margin-inline: auto; padding-block: clamp(160px, 14vw, 280px) clamp(240px, 24vw, 480px); }
+.hero__content h1 { font-size: clamp(32px, 2.9vw, 56px); }
+.hero__content p { line-height: 1.5; }
+.site-header { top: 32px; }
+.brand__mark { flex-shrink: 0; }
+.about-section__bio, .expertise-card, .care-question, .recovery-footer__links > div { min-width: 0; }
+.expertise-menu__grid { grid-template-columns: minmax(0, 2fr) minmax(0, 1.25fr) minmax(0, 0.8fr); }
+.expertise-menu__grid h3 { white-space: normal; }
+.recovery-footer__links span { vertical-align: middle; }
+@media (min-width: 901px) and (max-width: 1200px) {
+  .site-header { gap: 16px; }
+  .site-nav { gap: 6px; }
+  .site-nav > a, .expertise-menu__trigger { padding: 10px 16px; }
+  .brand { gap: 10px; font-size: 16px; }
+  .brand__mark { width: 48px; height: 48px; }
+  .recovery-footer__intro { max-width: 80%; }
+  .recovery-footer__links { width: 100%; }
+}
+@media (max-width: 900px) {
+  .container { width: calc(100% - 40px); }
+  .site-header { position: relative; top: auto; left: auto; right: auto; width: calc(100% - 40px); margin-inline: auto; padding-top: 20px; flex-direction: row; flex-wrap: wrap; gap: 16px; }
+  .brand { gap: 10px; font-size: 18px; }
+  .brand__mark { width: 48px; height: 48px; }
+  .site-header__toggle { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 12px; border: 1px solid #ff6415; background: #f8f4ec; font-size: 14px; }
+  .site-nav { display: none; width: 100%; flex-basis: 100%; padding: 16px; background: #f8f4ec; border: 1px solid #ffd1a0; }
+  .site-nav.is-open { display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
+  .site-nav > a { display: flex; align-items: center; min-height: 44px; font-size: 16px; padding: 10px 14px; }
+  .expertise-menu { display: block; }
+  .expertise-menu__trigger { width: 100%; font-size: 16px; padding: 10px 14px; min-height: 44px; cursor: pointer; }
+  .expertise-menu__arrow { display: none; }
+  .expertise-menu__panel { position: static; padding: 20px 14px; max-height: none; overflow: visible; }
+  .expertise-menu__grid { grid-template-columns: 1fr; gap: 24px; }
+  .expertise-menu__grid h3 { margin-bottom: 12px; }
+  .expertise-menu__brain-links { gap: 20px; }
+  .site-nav .expertise-menu__panel a { min-height: 44px; padding-block: 10px; font-size: 14px; }
+  .expertise-menu__panel a + a { margin-top: 4px; }
+  .hero { min-height: 680px; }
+  .hero__content { width: calc(100% - 40px); padding-block: 60px 220px; }
+  .hero__content h1 { font-size: clamp(30px, 4.8vw, 42px); }
+  .hero__content p { max-width: 620px; font-size: 16px; }
+  .desktop-break { display: none; }
+  .hero__actions { flex-wrap: wrap; gap: 12px; }
+  .hero__sparkles { inset: auto 0 0; aspect-ratio: 1920 / 1197; }
+  .hero__waves { height: 28%; }
+  .about-section__content { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 28px; }
+  .care-section__copy { width: 100%; text-align: left; margin-top: 36px; line-height: 1.6; }
+  .care-section__copy p + p { margin-top: 20px; }
+  .care-questions__grid { grid-template-columns: 1fr; }
+  .recovery-footer__intro { max-width: none; }
+  .recovery-footer__links { width: 100%; }
+  .button, .conditions-section__controls button, .expertise-dialog__close { min-height: 44px; }
+}
+@media (max-width: 600px) {
+  .hero { min-height: 620px; }
+  .hero__content { padding-block: 44px 180px; }
+  .hero__content h1 { font-size: clamp(28px, 7.5vw, 38px); line-height: 1.25; }
+  .hero__content p { margin-block: 20px 24px; }
+  .hero__actions { flex-direction: column; align-items: center; }
+  .hero__actions .button { width: 100%; max-width: 320px; }
+  .about-section__content { grid-template-columns: 1fr; gap: 28px; }
+  .about-section__portrait { max-width: 440px; aspect-ratio: 0.96; }
+  .about-section__intro { line-height: 1.65; }
+  .expertise-card, .expertise-card--brain { min-height: 400px; }
+  .expertise-card__content { padding: 24px; }
+  .expertise-card p { font-size: 16px; line-height: 1.5; }
+  .expertise-dialog { padding: 48px 24px 24px; }
+  .expertise-dialog h2 { font-size: 26px; }
+  .care-question h3 button { padding: 18px 16px; gap: 16px; }
+  .care-question__answer p { padding-inline: 16px; }
+  .condition-card { min-height: 380px; padding: 24px; }
+  .condition-card__icon { margin-bottom: 32px; }
+  .condition-card h3 { margin-bottom: 20px; }
+  .conditions-section__slider { margin-left: 20px; }
+  .conditions-section__controls { justify-content: center; }
+  .recovery-footer__links { gap: 24px; margin-top: 48px; }
+  .recovery-footer__links a { min-height: 44px; padding-block: 8px; margin-top: 0; }
+}
+@media (max-width: 380px) {
+  .brand { font-size: 16px; gap: 6px; }
+  .brand__mark { width: 38px; height: 38px; }
+  .site-header__toggle { padding-inline: 8px; }
+  .expertise-menu__brain-links { grid-template-columns: 1fr; gap: 4px; }
+  .expertise-card__content { padding: 20px; }
+}
+
+/* The supplied logo includes both the symbol and the doctor's name. */
+.brand__logo { width: clamp(220px, 17vw, 327px); height: auto; }
+@media (max-width: 1200px) { .brand__logo { width: 220px; } }
+@media (max-width: 600px) { .brand__logo { width: min(230px, 58vw); } }
+
+/* Faint neural artwork sits to the left of the care copy, as in the reference. */
+.care-section::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: -18vw;
+  left: -48vw;
+  width: 90vw;
+  aspect-ratio: 1880 / 1361;
+  background: url("../images/neurosurgical-care-new.png") center / contain no-repeat;
+  opacity: 0.65;
+  pointer-events: none;
+}
+@media (max-width: 900px) {
+  .care-section { overflow: hidden; }
+  .care-section::before { top: 0; left: -75vw; width: 130vw; opacity: 0.45; }
+}
+@media (max-width: 600px) {
+  .care-section::before { left: -110vw; width: 170vw; opacity: 0.35; }
+}
+
+/* Shared artwork bridges the expertise cards and the decision questions. */
+.decision-section { position: relative; isolation: isolate; overflow: hidden; background: #2e2d27; }
+.decision-section::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  bottom: clamp(48px, 4vw, 80px);
+  left: 0;
+  width: 100%;
+  aspect-ratio: 1919 / 1080;
+  background: url("../images/decision-matters.svg") center / contain no-repeat;
+  pointer-events: none;
+}
+.decision-section .expertise-section { background: transparent; padding-bottom: clamp(48px, 6vw, 120px); }
+.decision-section .care-questions { background: transparent; padding-top: clamp(48px, 6vw, 120px); }
+@media (max-width: 900px) {
+  .decision-section::before { bottom: 80px; width: 160%; left: -30%; min-height: 700px; background-size: cover; }
+}
+
+@media (max-width: 900px) {
+  .conditions-section::before { top: -24vw; right: -45vw; width: 160vw; opacity: 0.45; }
+}
+@media (max-width: 600px) {
+  .conditions-section::before { top: -36vw; right: -70vw; width: 200vw; opacity: 0.35; }
+}
+
+@media (max-width: 900px) {
+  .recovery-footer::before { background-position: 75% center; opacity: 0.22; }
+}
+
+/* White outlines frame each header navigation button. */
+.site-nav > a, .expertise-menu__trigger { border: 2px solid #fff; }
+.expertise-menu__panel { border-top: 1px solid #ffb58e; border-bottom: 1px solid #ff6415; }
+.expertise-menu__grid > div:not(:last-child) { border-right: 1px solid rgba(255, 100, 21, 0.4); padding-right: 24px; }
+@media (max-width: 900px) {
+  .expertise-menu__grid > div:not(:last-child) { border-right: 0; padding-right: 0; }
+}
+
+/* Shared typography stays consistent across pages and viewport sizes. */
+:root {
+  --font-size-body: 22px;
+  --font-size-paragraph: 18px;
+  --font-size-h1: 56px;
+  --font-size-h2: 44px;
+  --font-size-button: 16px;
+}
+body { font-size: var(--font-size-body); }
+/* These global sizes take precedence over component and mobile overrides. */
+p { font-size: var(--font-size-paragraph) !important; }
+h1 { font-size: var(--font-size-h1) !important; }
+h2 { font-size: var(--font-size-h2) !important; }
+button, .button, .recovery-footer__booking {
+  font-size: var(--font-size-button) !important;
+}
+
+/* Scroll progress pans artwork inside a fixed, clipped image frame. */
+.scroll-pan-image { position: relative; overflow: hidden; }
+.scroll-pan-image > img { display: block; width: 100%; height: 100%; object-fit: cover; transform: translateY(var(--scroll-pan-y, 0%)) scale(1.1); }
+.scroll-pan-image.hero__image { position: absolute; inset: 0; width: 100%; height: 100%; animation: none; transform: none; }
+.scroll-pan-image.hero__image > img { height: 100%; object-position: center bottom; }
+.about-section__portrait > img { object-position: center top; }
+.expertise-card::before { transform: scale(1.1); translate: 0 var(--scroll-pan-y, 0%); scale: 1; transform-origin: center; transition: scale 900ms cubic-bezier(0.22, 1, 0.36, 1), translate 180ms ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  .scroll-pan-image > img, .expertise-card::before { transform: none; }
+  .expertise-card::before, .expertise-card:hover::before, .expertise-card:focus-within::before { scale: none; translate: none; transition: none; }
+}
+
+/* Keep the homepage banner static. */
+.hero__content { transform: none; }
+.hero__content h1 .hero__title-line { display: block; color: inherit; }
+.hero .hero__image { position: absolute; inset: 0; width: 100%; height: 100%; animation: none; transform: none; }
+.hero .hero__image > img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center bottom; transform: scale(1.12); }
+
+/* Reveal the neural artwork progressively from left to right. */
+.care-section[data-draw-artwork]::before {
+  mask-image: linear-gradient(to right, #000 40%, transparent 50%);
+  mask-size: 250% 100%;
+  mask-position: 100% 0;
+  mask-repeat: no-repeat;
+}
+.care-section[data-draw-artwork].is-artwork-drawn::before {
+  animation: care-art-draw 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+@keyframes care-art-draw {
+  from { mask-position: 100% 0; }
+  to { mask-position: 0% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .care-section[data-draw-artwork]::before,
+  .care-section[data-draw-artwork].is-artwork-drawn::before { animation: none; mask-image: none; }
+}
+
+/* Grey particles briefly accompany the drawing reveal. */
+.care-section__drawing-dots { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.care-section__drawing-dots span { position: absolute; width: var(--dot-size); height: var(--dot-size); border-radius: 50%; background: #8e8d87; opacity: 0; }
+.care-section.is-artwork-drawn .care-section__drawing-dots span { animation: care-dot-appear 1.25s ease-in-out var(--dot-delay) both; }
+@keyframes care-dot-appear {
+  0% { opacity: 0; transform: translate(-10px, 5px) scale(0.4); }
+  35% { opacity: 0.55; transform: translate(0, 0) scale(1); }
+  65% { opacity: 0.35; }
+  100% { opacity: 0; transform: translate(12px, -6px) scale(0.65); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .care-section.is-artwork-drawn .care-section__drawing-dots span { animation: none; }
+}
+
+/* Draw the decision-section background inward from the right edge. */
+.decision-section[data-draw-artwork]::before {
+  mask-image: linear-gradient(to left, #000 40%, transparent 50%);
+  mask-size: 250% 100%;
+  mask-position: 0% 0;
+  mask-repeat: no-repeat;
+}
+.decision-section[data-draw-artwork].is-artwork-drawn::before { animation: decision-art-draw 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) both; }
+@keyframes decision-art-draw {
+  from { mask-position: 0% 0; }
+  to { mask-position: 100% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .decision-section[data-draw-artwork]::before,
+  .decision-section[data-draw-artwork].is-artwork-drawn::before { animation: none; mask-image: none; }
+}
+
+/* Reveal the Conditions Treated artwork when the section enters view. */
+.conditions-section[data-draw-artwork]::before {
+  mask-image: linear-gradient(to left, #000 40%, transparent 50%);
+  mask-size: 250% 100%;
+  mask-position: 0% 0;
+  mask-repeat: no-repeat;
+}
+.conditions-section[data-draw-artwork].is-artwork-drawn::before { animation: decision-art-draw 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .conditions-section[data-draw-artwork]::before,
+  .conditions-section[data-draw-artwork].is-artwork-drawn::before { animation: none; mask-image: none; }
+}
+
+/* Stronger footer artwork draws in from the right on scroll. */
+.recovery-footer::before { opacity: 0.46; }
+.recovery-footer[data-draw-artwork]::before {
+  mask-image: linear-gradient(to left, #000 40%, transparent 50%);
+  mask-size: 250% 100%;
+  mask-position: 0% 0;
+  mask-repeat: no-repeat;
+}
+.recovery-footer[data-draw-artwork].is-artwork-drawn::before { animation: decision-art-draw 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) both; }
+@media (max-width: 900px) {
+  .recovery-footer::before { opacity: 0.36; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .recovery-footer[data-draw-artwork]::before,
+  .recovery-footer[data-draw-artwork].is-artwork-drawn::before { animation: none; mask-image: none; }
+}
+
+/* Read the biography progressively as it scrolls into view. */
+.about-section__intro .reading-word { color: #96938b; transition: color 160ms ease; }
+.about-section__intro .reading-word.is-read { color: #4d4c46; }
+.about-section__intro .reading-word__space { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .about-section__intro .reading-word { transition: none; }
+}

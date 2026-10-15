@@ -1,0 +1,80 @@
+.about-page { position: relative; background: #f8f4ec; min-height: 100vh; }
+.about-page__intro, .about-page__approach { width: 90.5%; max-width: 1600px; margin-inline: auto; }
+.about-page__intro { padding-top: 178px; text-align: center; }
+.about-page h1, .about-page h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; line-height: 1.25; }
+.about-page h1 { font-size: clamp(32px, 3.15vw, 52px); margin-bottom: 32px; }
+.about-page h1 span, .about-page h2 span { color: #ff6415; }
+.about-page__media { width: 100%; aspect-ratio: 1200 / 460; background: #d9d9d9; }
+.about-page__bio { max-width: 1080px; margin: 34px auto 0; --font-size-paragraph: 22px; font-size: var(--font-size-paragraph); line-height: 1.5; }
+.about-page__bio p + p { color: #8b8984; }
+.about-page__approach { position: relative; isolation: isolate; margin-top: 174px; padding-bottom: 140px; }
+.about-page__approach::before { content: ""; position: absolute; z-index: -1; inset: 0 calc((100% - 100vw) / 2); background: url("../images/grey-bg.png") right top / 100% auto no-repeat; background-position: right calc(-1 * clamp(100px, 14vw, 280px)); pointer-events: none; }
+.about-page h2 { font-size: clamp(28px, 2.45vw, 40px); }
+.about-page__description { margin-top: 38px; font-size: 16px; }
+.about-page__steps { padding: 62px 18px 0; }
+.about-page__steps article + article { margin-top: 76px; }
+.about-page__steps h3 { display: flex; align-items: center; gap: 9px; color: #ff6415; font-size: 21px; font-weight: 500; margin-bottom: 20px; }
+.about-page__steps svg { width: 19px; height: 22px; flex-shrink: 0; }
+.about-page__steps p { font-size: 16px; line-height: 1.4; }
+.about-page__lead { font-weight: 500; margin-bottom: 22px; }
+@media (max-width: 900px) {
+  .about-page__intro { padding-top: 54px; }
+  .about-page__approach { margin-top: 90px; padding-bottom: 80px; }
+  .about-page__media { aspect-ratio: 16 / 9; }
+  .about-page__steps { padding: 40px 0 0; }
+  .about-page__steps article + article { margin-top: 48px; }
+}
+
+.about-page__education, .about-page__consults { width: 89%; max-width: 1600px; margin-inline: auto; }
+.about-page__education { padding-top: 40px; text-align: center; }
+.about-page__education .about-page__description { margin-top: 44px; }
+.about-page__qualifications { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 42px; margin-top: 46px; }
+.about-page__qualifications article { border: 1px solid #ff6415; min-height: 145px; padding: 20px 18px 14px; display: flex; flex-direction: column; align-items: center; }
+.about-page__qualifications h3 { font-size: clamp(20px, 1.55vw, 26px); font-weight: 600; margin-bottom: 24px; }
+.about-page__qualifications p { font-size: clamp(16px, 1.2vw, 20px); line-height: 1.25; }
+.about-page__consults { margin-top: 210px; padding-bottom: 210px; }
+.about-page__consultation { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 44px; margin-top: 44px; }
+.about-page__map { width: 100%; aspect-ratio: 870 / 550; border: 0; background: #e5e5e5; }
+.about-page__consultation-details { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 44px; }
+.about-page__consultation-details p { font-size: clamp(16px, 1.2vw, 20px); font-weight: 500; line-height: 1.4; }
+.about-page__consultation-details .button { font-size: 14px; padding: 10px 30px; }
+@media (max-width: 900px) {
+  .about-page__education { padding-top: 20px; }
+  .about-page__qualifications { gap: 18px; }
+  .about-page__consults { margin-top: 90px; padding-bottom: 90px; }
+  .about-page__consultation { gap: 24px; }
+  .about-page__consultation-details { gap: 24px; }
+}
+@media (max-width: 600px) {
+  .about-page__qualifications, .about-page__consultation { grid-template-columns: 1fr; }
+  .about-page__education .about-page__description { margin-top: 24px; }
+  .about-page__qualifications { margin-top: 28px; }
+  .about-page__qualifications article { min-height: 130px; }
+  .about-page__consultation { margin-top: 28px; }
+}
+
+/* Draw the approach artwork from right to left as it enters the viewport. */
+.about-page__approach[data-draw-artwork]::before {
+  mask-image: linear-gradient(to left, #000 40%, transparent 50%);
+  mask-size: 250% 100%;
+  mask-position: 0% 0;
+  mask-repeat: no-repeat;
+}
+.about-page__approach[data-draw-artwork].is-artwork-drawn::before { animation: decision-art-draw 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .about-page__approach[data-draw-artwork]::before,
+  .about-page__approach[data-draw-artwork].is-artwork-drawn::before { animation: none; mask-image: none; }
+}
+
+.about-page__bio .reading-word { color: #96938b; transition: color 160ms ease; }
+.about-page__bio .reading-word.is-read { color: #4d4c46; }
+.about-page__bio .reading-word__space { display: none; }
+@media (max-width: 1024px) {
+  .about-page__bio { --font-size-paragraph: 20px; }
+}
+@media (max-width: 600px) {
+  .about-page__bio { --font-size-paragraph: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-page__bio .reading-word { transition: none; }
+}
