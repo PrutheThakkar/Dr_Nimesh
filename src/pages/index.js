@@ -1,4 +1,8 @@
 import * as React from "react"
+import { graphql } from "gatsby"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import sanitizeHtml from "sanitize-html"
+import { CmsText, paragraphs } from "../components/CmsContent"
 import ReadingCopy from "../components/ReadingCopy"
 import Header from "../components/Header"
 import ScrollPanImage from "../components/ScrollPanImage"
@@ -6,7 +10,12 @@ import Footer from "../components/Footer"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Autoplay, A11y, Keyboard } from "swiper/modules"
 import "swiper/css"
+import { conditionIcons } from "../components/medicalIcons"
+import { mergeHome, ConditionIcon } from "../components/homeDefaults"
 import heroBanner from "../images/banner_image-new.webp"
+import brainImage from "../images/brain_disorder-new.webp"
+import spineImage from "../images/spine_disorders-new.webp"
+import traumaImage from "../images/trauma_and_emergency_care-new.webp"
 import meetDrNimesh from "../images/meet-dr-nimesh.webp"
 import "../css/reset.css"
 import "../css/common.css"
@@ -19,70 +28,39 @@ const careDots = [
   [51, 23, 5, 0.76], [35, 84, 7, 0.48], [57, 54, 4, 0.88],
 ]
 
-const careParagraphs = [
-  "Conditions involving the brain and spine can affect some of the most important aspects of everyday life, including movement, sensation, balance, speech and independence.",
-  "Dr. Nimesh Jain takes a structured approach to neurosurgical care, combining clinical assessment with appropriate imaging and investigations to understand the underlying condition.",
-  "When surgery is required, the treatment plan is based on the condition, its severity and the structures involved. Where appropriate, non-surgical management and rehabilitation may also form part of the treatment journey.",
-]
-const aboutParagraphs = [
-  "Dr. Nimesh Jain is a Consultant Neurosurgeon with expertise in brain, spine and trauma-related neurosurgical conditions.",
-  "His clinical practice includes the management of complex brain conditions, spinal disorders, traumatic brain injuries and conditions affecting the spinal cord and nerves.",
-  "His approach combines careful clinical assessment, appropriate investigations and individualised treatment planning.",
-]
+// WordPress content takes priority over the original static defaults.
+function CmsIcon({ svg, className }) {
+  return <span className={className} aria-hidden="true" dangerouslySetInnerHTML={{ __html: sanitizeHtml(svg || "", {
+    allowedTags: ["svg", "g", "path", "circle", "ellipse", "rect", "line", "polyline", "polygon", "defs", "linearGradient", "radialGradient", "stop", "clipPath", "mask", "title"],
+    allowedAttributes: { "*": ["viewBox", "xmlns", "width", "height", "fill", "stroke", "stroke-width", "stroke-linecap", "stroke-linejoin", "stroke-miterlimit", "fill-rule", "clip-rule", "d", "cx", "cy", "r", "rx", "ry", "x", "y", "x1", "x2", "y1", "y2", "points", "transform", "opacity", "fill-opacity", "stroke-opacity", "id", "offset", "stop-color", "stop-opacity", "gradientUnits", "gradientTransform", "clip-path"] },
+    parser: { lowerCaseTags: false, lowerCaseAttributeNames: false },
+  }) }} />
+}
 
-
-const expertise = [
-  {
-    slug: "brain", title: "Brain Disorders",
-    description: "Surgical management of brain tumours, intracranial bleeding, hydrocephalus, raised intracranial pressure and selected stroke related neurosurgical conditions.",
-    topics: ["Brain tumours", "Intracranial bleeding", "Hydrocephalus", "Raised intracranial pressure", "Selected stroke related conditions"],
-  },
-  {
-    slug: "spine", title: "Spine Disorders",
-    description: "Assessment and management of spinal disorders, including disc problems and conditions affecting the spinal cord and nerves.",
-    topics: ["Spinal disorders", "Disc problems", "Spinal cord conditions", "Nerve compression"],
-  },
-  {
-    slug: "trauma", title: "Trauma & Emergency Care",
-    description: "Neurosurgical care for traumatic brain injuries, spinal injuries and acute conditions involving the brain and spine.",
-    topics: ["Traumatic brain injuries", "Spinal injuries", "Acute brain and spine conditions"],
-  },
-]
-
-function ExpertiseSection() {
-  const [selected, setSelected] = React.useState(null)
-  const dialogRef = React.useRef(null)
-  React.useEffect(() => {
-    if (selected) dialogRef.current.showModal()
-  }, [selected])
+function ExpertiseSection({ items }) {
   return (
     <section className="expertise-section" id="expertise" aria-labelledby="expertise-heading">
       <div className="container">
         <h2 id="expertise-heading">Area Of <span>Expertise</span></h2>
         <div className="expertise-grid">
-          {expertise.map(item => (
-            <article className={`expertise-card expertise-card--${item.slug}`} key={item.slug} tabIndex={0} aria-labelledby={`expertise-${item.slug}`}>
+          {items.map((item, index) => {
+            const image = getImage(item.areaImage?.node?.gatsbyImage)
+            const link = item.areaLinkRedirect
+            return <article className={`expertise-card${index === 0 ? " expertise-card--featured" : ""}`} key={index} tabIndex={0} aria-labelledby={`expertise-${index}`}>
+              {image ? <GatsbyImage className="expertise-card__image" image={image} alt={item.areaImage.node.altText || ""} /> : <img className="expertise-card__image" src={[brainImage, spineImage, traumaImage][index % 3]} alt="" loading="lazy" />}
               <div className="expertise-card__content">
-                <h3 id={`expertise-${item.slug}`}>{item.title}</h3>
+                <CmsText as="h3" id={`expertise-${index}`} html={item.areaTitle} />
                 <div className="expertise-card__reveal">
                   <div className="expertise-card__details">
-                    <p>{item.description}</p>
-                    <button type="button" onClick={() => setSelected(item)} aria-label={`Explore ${item.title}`}>Explore</button>
+                    <CmsText html={item.areaPara} />
+                    {link?.url && <a className="expertise-card__link" href={link.url} target={link.target || undefined} rel={link.target === "_blank" ? "noopener noreferrer" : undefined}>{link.title || "Explore"}</a>}
                   </div>
                 </div>
               </div>
             </article>
-          ))}
+          })}
         </div>
       </div>
-      <dialog className="expertise-dialog" ref={dialogRef} onClose={() => setSelected(null)} aria-labelledby="expertise-dialog-heading">
-        {selected && <>
-          <button className="expertise-dialog__close" type="button" onClick={() => dialogRef.current.close()} aria-label="Close expertise details">×</button>
-          <h2 id="expertise-dialog-heading">{selected.title}</h2>
-          <p>{selected.description}</p>
-          <ul>{selected.topics.map(topic => <li key={topic}>{topic}</li>)}</ul>
-        </>}
-      </dialog>
     </section>
   )
 }
@@ -106,7 +84,7 @@ const careQuestions = [
   },
 ]
 
-function CareQuestionsSection() {
+function CareQuestionsSection({ title, subtitle, bottomParagraph }) {
   const [openQuestions, setOpenQuestions] = React.useState([])
   const allOpen = openQuestions.length === careQuestions.length
   const toggleQuestion = index => setOpenQuestions(current =>
@@ -115,8 +93,8 @@ function CareQuestionsSection() {
   return (
     <section className="care-questions" aria-labelledby="care-questions-heading">
       <div className="container care-questions__content">
-        <h2 id="care-questions-heading">When Neurological Function Is at Risk,<br /><span>Every Decision Matters</span></h2>
-        <p className="care-questions__intro">A neurosurgical diagnosis can bring many questions like</p>
+        <CmsText as="h2" id="care-questions-heading" html={title} />
+        <CmsText className="care-questions__intro" html={subtitle} />
         <div className="care-questions__grid">
           {careQuestions.map((item, index) => {
             const isOpen = openQuestions.includes(index)
@@ -134,45 +112,14 @@ function CareQuestionsSection() {
             )
           })}
         </div>
-        <p className="care-questions__summary">Dr. Nimesh Jain believes patients should understand their condition and treatment options clearly before making decisions about their care.<br />The approach is centred on accurate diagnosis, appropriate treatment and continued attention to neurological recovery.</p>
+        <CmsText className="care-questions__summary" html={bottomParagraph} />
         <button className="care-questions__read-all" type="button" onClick={() => setOpenQuestions(allOpen ? [] : careQuestions.map((_, index) => index))}>{allOpen ? "Close All" : "Read All"}</button>
       </div>
     </section>
   )
 }
 
-const treatedConditions = [
-  { title: "Brain Tumours", description: "Assessment and surgical management of selected brain tumors.", icon: "brain" },
-  { title: "Stroke & Brain Haemorrhage", description: "Neurosurgical evaluation and management of selected cases involving bleeding, swelling or pressure on the brain.", icon: "stroke" },
-  { title: "Raised Intracranial Pressure", description: "Assessment and treatment of conditions causing increased pressure inside the skull.", icon: "pressure" },
-  { title: "Head Injury & Brain Trauma", description: "Evaluation and management of traumatic injuries affecting the brain.", icon: "trauma" },
-  { title: "Degenerative Spine Conditions", description: "Treatment planning for conditions affecting the spinal discs, vertebrae and nerves.", icon: "spine" },
-  { title: "Hydrocephalus", description: "Assessment and management of conditions involving fluid build-up within the brain.", icon: "fluid" },
-]
-
-function ConditionIcon({ type }) {
-  const nodes = [[20, 35], [31, 20], [48, 14], [64, 19], [80, 31], [88, 47], [75, 62], [60, 70], [42, 65], [26, 53], [43, 38], [61, 40], [62, 56]]
-  return (
-    <svg className="condition-card__icon" viewBox="0 0 110 100" fill="none" stroke="currentColor" strokeWidth="1" aria-hidden="true">
-      {type === "spine" ? <>
-        <path d="M60 8C35 30 75 53 46 88M69 12C45 34 85 57 55 92" />
-        {Array.from({ length: 8 }, (_, i) => <path key={i} d={`M${48 + Math.sin(i) * 9} ${15 + i * 10}l18 4-2 7-18-4z`} />)}
-      </> : <>
-        <path d="M23 57C6 53 10 29 27 27 20 10 40 5 48 13 58 4 72 13 74 22 96 21 105 44 88 54 96 69 76 80 66 71 57 81 40 72 36 63 28 68 20 63 23 57ZM66 71l8 17-10-2-7-12" />
-        {nodes.map(([x, y], i) => <g key={i}>
-          <path d={`M${x} ${y}L${nodes[(i + 1) % nodes.length].join(" ")}M${x} ${y}L${nodes[(i + 4) % nodes.length].join(" ")}`} />
-          <circle cx={x} cy={y} r="1.6" fill="currentColor" />
-        </g>)}
-        {type === "pressure" && <path d="M34 1q-5 5 0 10M50 0q-5 5 0 10M67 2q-5 5 0 10" />}
-        {type === "trauma" && <path d="M75 8l-9 8 12 2-7 9M87 10l-5 7M94 21l-9 3" />}
-        {type === "stroke" && <path d="M80 9l-3 10M93 14l-7 9M101 30l-9 2M94 42l9 5" />}
-        {type === "fluid" && <path d="M54 24c-2 5-7 9-7 13a7 7 0 0 0 14 0c0-4-5-8-7-13Z" />}
-      </>}
-    </svg>
-  )
-}
-
-function ConditionsSection() {
+function ConditionsSection({ title, items }) {
   const swiperRef = React.useRef(null)
   const [paused, setPaused] = React.useState(false)
   const [reducedMotion, setReducedMotion] = React.useState(false)
@@ -190,21 +137,21 @@ function ConditionsSection() {
   }, [paused, reducedMotion])
   return (
     <section className="conditions-section" id="conditions" aria-labelledby="conditions-heading">
-      <h2 id="conditions-heading">Conditions <span>Treated</span></h2>
+      <CmsText as="h2" id="conditions-heading" html={title} />
       <div className="conditions-section__slider" onFocusCapture={() => swiperRef.current?.autoplay?.stop()} onBlurCapture={event => {
         if (!event.currentTarget.contains(event.relatedTarget) && !paused && !reducedMotion) swiperRef.current?.autoplay?.start()
       }}>
         <Swiper modules={[Autoplay, A11y, Keyboard]} onSwiper={swiper => { swiperRef.current = swiper }}
-          slidesPerView={1.15} spaceBetween={0} loop speed={900}
+          slidesPerView={1.15} spaceBetween={0} loop={items.length > 4} speed={900}
           autoplay={{ delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true }}
           keyboard={{ enabled: true, onlyInViewport: true }}
           breakpoints={{ 600: { slidesPerView: 2.15 }, 1000: { slidesPerView: 3.3 }, 1400: { slidesPerView: 4.25 } }}
           a11y={{ containerMessage: "Conditions treated carousel" }}>
-          {treatedConditions.map(item => <SwiperSlide key={item.title}>
+          {items.map((item, index) => <SwiperSlide key={index}>
             <article className="condition-card">
-              <ConditionIcon type={item.icon} />
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
+              {item.conditionsSvgIcon?.includes("<svg") ? <CmsIcon className="condition-card__icon" svg={item.conditionsSvgIcon} /> : conditionIcons[item.icon] ? <img className="condition-card__icon" src={conditionIcons[item.icon]} alt="" loading="lazy" /> : <ConditionIcon type={item.icon || "brain"} />}
+              <CmsText as="h3" html={item.conditionTitle} />
+              <CmsText html={item.conditionPara} />
             </article>
           </SwiperSlide>)}
         </Swiper>
@@ -218,16 +165,19 @@ function ConditionsSection() {
   )
 }
 
-const IndexPage = () => (
+const IndexPage = ({ data }) => {
+  const home = mergeHome(data?.allWpPage?.edges?.[0]?.node?.homePage || {})
+  const heroImage = getImage(home.pageBackgroundImage?.node?.gatsbyImage)
+  return (
   <main>
     <section className="hero" aria-labelledby="hero-heading">
       <Header />
       <div className="hero__image">
-        <img src={heroBanner} alt="Soft orange waves and glowing interconnected points on a cream background" fetchPriority="high" />
+        {heroImage ? <GatsbyImage image={heroImage} alt={home.pageBackgroundImage.node.altText || ""} loading="eager" fetchPriority="high" /> : <img src={heroBanner} alt="Soft orange waves and glowing interconnected points on a cream background" fetchPriority="high" />}
       </div>
       <div className="hero__content">
-        <h1 id="hero-heading"><span className="hero__title-line">Advanced <span>Brain &amp; Spine Surgery</span></span><span className="hero__title-line">With Ethical &amp; Precise Care</span></h1>
-        <p>Dr. Nimesh Jain specializes in the diagnosis and surgical management of brain tumours,<br className="desktop-break" /> spine disorders, trauma and stroke, with a focus on safety, clarity and long-term recovery.</p>
+        <CmsText as="h1" id="hero-heading" html={home.pageTitle} />
+        <CmsText className="hero__subtitle" html={home.pageSubtitle} />
         <div className="hero__actions">
           <a className="button button--primary" href="/contact/">Book a Consultation</a>
           <a className="button button--outline" href="#conditions">Explore Treatments</a>
@@ -239,27 +189,13 @@ const IndexPage = () => (
       <div className="container about-section__content">
         <ScrollPanImage className="about-section__portrait" src={meetDrNimesh} alt="Dr. Nimesh Jain, Consultant Neurosurgeon" loading="lazy" />
         <div className="about-section__bio">
-          <h2 id="about-heading">Meet <span>Dr. Nimesh Jain</span></h2>
-          <ReadingCopy paragraphs={aboutParagraphs} className="about-section__intro" />
+          <CmsText as="h2" id="about-heading" html={home.aboutTitle} />
+          <ReadingCopy paragraphs={paragraphs(home.aboutParagraph)} className="about-section__intro" />
           <ul className="about-section__highlights">
-            <li>
-              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M12 5H7v24h18V5h-5M12 3h8v5h-8zM11 14l2 2 3-4M18 14h3M11 23l2 2 3-4M18 23h3" />
-              </svg>
-              <span>Detailed evaluation of brain &amp; spine disorders</span>
-            </li>
-            <li>
-              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="8" cy="17" r="3" /><path d="M3 29v-4a5 5 0 0 1 10 0v4M15 5h14v12H19l-4 4V5zM19 9h6M19 13h4" />
-              </svg>
-              <span>Transparent explanation of diagnosis &amp; treatment</span>
-            </li>
-            <li>
-              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="16" cy="6" r="3" /><path d="M10 18v-2a6 6 0 0 1 12 0v2M3 21h5v9H3zM8 23l5-3h5a2 2 0 0 1 0 4h-4M8 28h12l9-6a2 2 0 0 0-3-3l-7 5" />
-              </svg>
-              <span>Care focused on safety, recovery and quality of life</span>
-            </li>
+            {(home.detailsList || []).map((item, index) => <li key={index}>
+              <CmsIcon svg={item.iconSvg} />
+              <CmsText as="span" html={item.text} />
+            </li>)}
           </ul>
         </div>
       </div>
@@ -271,18 +207,67 @@ const IndexPage = () => (
         }} />)}
       </div>
       <div className="container care-section__content">
-        <h2 id="care-heading"><span>Neurosurgical Care</span><br />That Begins With Understanding</h2>
-        <ReadingCopy paragraphs={careParagraphs} />
+        <CmsText as="h2" id="care-heading" html={home.neuroTitle} />
+        <ReadingCopy paragraphs={paragraphs(home.neuroPara)} />
       </div>
     </section>
     <div className="decision-section">
-      <ExpertiseSection />
-      <CareQuestionsSection />
+      <ExpertiseSection items={home.areaList || []} />
+      <CareQuestionsSection title={home.everyDecisionMattersTitle} subtitle={home.everyDecisionMattersSubtitle} bottomParagraph={home.everyDecisionMattersBottomPara} />
     </div>
-    <ConditionsSection />
+    <ConditionsSection title={home.conditionTreatedTitle} items={home.conditionTreatedList || []} />
     <Footer />
   </main>
-)
+  )
+}
 
 export default IndexPage
 export const Head = () => <title>Dr. Nimesh Jain | Brain, Spine &amp; Trauma Care</title>
+
+
+export const query = graphql`
+  query HomePageQuery {
+    allWpPage(filter: { databaseId: { eq: 11 } }) {
+      edges {
+        node {
+          homePage {
+            pageTitle
+            pageSubtitle
+            pageBackgroundImage {
+              node {
+                altText
+                gatsbyImage(width: 1920, layout: FULL_WIDTH, placeholder: BLURRED)
+              }
+            }
+            aboutTitle
+            aboutParagraph
+            detailsList { iconSvg text }
+            neuroTitle
+            neuroPara
+            areaList {
+              areaImage {
+                node {
+                  id
+                  altText
+                  gatsbyImage(width: 1000, layout: CONSTRAINED, placeholder: BLURRED)
+                }
+              }
+              areaTitle
+              areaPara
+              areaLinkRedirect { target title url }
+            }
+            everyDecisionMattersTitle
+            everyDecisionMattersSubtitle
+            everyDecisionMattersBottomPara
+            conditionTreatedTitle
+            conditionTreatedList {
+              conditionsSvgIcon
+              conditionTitle
+              conditionPara
+            }
+          }
+        }
+      }
+    }
+  }
+`

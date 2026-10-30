@@ -67,3 +67,6 @@
     transform: none;
   }
 }
+
+.expertise-page__grid h3 { display: flex; align-items: center; gap: 12px; }
+.expertise-page__condition-icon { width: 64px; height: 64px; flex: 0 0 64px; object-fit: contain; }

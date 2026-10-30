@@ -1,4 +1,5 @@
 import * as React from "react"
+import contactArtwork from "../images/contact new.webp"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import "../css/reset.css"
@@ -8,6 +9,7 @@ export default function ContactPage() {
   return <div className="contact-page"><Header /><main className="contact-page__content">
     <h1>Plan Your Consultation</h1>
     <p>Dr. Nimesh Jain · Consultant Neurosurgeon</p>
+    <img className="contact-page__banner" src={contactArtwork} alt="" fetchPriority="high" />
     <div className="contact-page__grid">
       <div><h2>Where to Visit</h2><p>Wockhardt Hospitals<br />Mira Road, Mumbai</p>
         <p>Please contact the hospital’s appointment desk to confirm consultation availability before your visit.</p>

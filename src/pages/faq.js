@@ -1,7 +1,7 @@
 import * as React from "react"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
-import bannerArtwork from "../images/FAQ-banner-image.webp"
+import bannerArtwork from "../images/faq-banner-new.webp"
 import "../css/reset.css"
 import "../css/common.css"
 import "../css/faq.css"

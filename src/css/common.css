@@ -808,3 +808,29 @@ button, .button, .recovery-footer__booking {
 @media (prefers-reduced-motion: reduce) {
   .about-section__intro .reading-word { transition: none; }
 }
+
+/* WordPress images and rich text use the existing section layouts. */
+.hero__image > .gatsby-image-wrapper { width: 100%; height: 100%; }
+.hero__image .gatsby-image-wrapper img { object-position: center bottom; }
+.hero__subtitle { font-size: clamp(16px, 1.25vw, 26px); line-height: 1.5; }
+.about-section__highlights li > span:first-child { display: inline-flex; flex: 0 0 32px; }
+.condition-card__icon { display: block; }
+.condition-card__icon svg { width: 100%; height: 100%; }
+.expertise-card > .expertise-card__image { position: absolute; inset: 0; z-index: -2; }
+.expertise-card--featured { grid-row: span 2; }
+.expertise-card--featured .expertise-card__reveal { grid-template-rows: 1fr; opacity: 1; visibility: visible; }
+.expertise-card--featured .expertise-card__details { transform: none; }
+.expertise-card__link { display: inline-block; margin-top: 26px; padding: 12px 36px; border: 2px solid #ff6415; background: #f7f3eb; color: #302f29; font-weight: 600; }
+.expertise-card__link:hover { background: #ff6415; color: #fff; }
+.expertise-card__link:focus-visible { outline: 3px solid #302f29; outline-offset: 4px; }
+@media (max-width: 767px) {
+  .expertise-card--featured { grid-row: auto; }
+}
+.expertise-card > img.expertise-card__image { width: 100%; height: 100%; object-fit: cover; }
+.condition-card > img.condition-card__icon { object-fit: contain; }
+.contact-page__banner { display: block; width: 100%; height: auto; margin-top: 32px; }
+
+/* Conditions share the reference's cream surface; only the active slide is orange. */
+.conditions-section .condition-card { background: #f7f3eb; }
+.conditions-section .swiper-slide-active .condition-card { background: linear-gradient(180deg, #ff9744 0%, #f7f3eb 100%); }
+.condition-card > div:not(.condition-card__icon) { font-size: clamp(16px, 1.2vw, 24px); line-height: 1.4; }

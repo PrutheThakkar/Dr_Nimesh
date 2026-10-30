@@ -1,23 +1,28 @@
+import { expertiseIcons } from "../components/medicalIcons"
 import ReadingCopy from "../components/ReadingCopy"
 
 import * as React from "react"
+import { graphql } from "gatsby"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import { CmsText, paragraphs } from "../components/CmsContent"
+import { withFallback } from "../components/homeDefaults"
 import Header from "../components/Header"
 import ScrollPanImage from "../components/ScrollPanImage"
 import Footer from "../components/Footer"
-import brainTumoursArtwork from "../images/brain-tumours.webp"
-import strokeArtwork from "../images/stroke.webp"
-import haemorrhageArtwork from "../images/brain-haemorrhage.webp"
-import intracranialArtwork from "../images/raised-intracranial.webp"
-import headInjuryArtwork from "../images/head-injury.webp"
-import bannerArtwork from "../images/expertise-page-banner.webp"
-import degenerativeSpineArtwork from "../images/Degenerative-Spine-Conditions_.webp"
-import slipDiscArtwork from "../images/Slip-Disc.webp"
-import cordCompressionArtwork from "../images/Spinal-Cord-Compression_.webp"
-import spineTraumaArtwork from "../images/Spine-Trauma_.webp"
-import traumaHeadArtwork from "../images/Head-Injury-trauma.webp"
-import brainTraumaArtwork from "../images/Brain-Trauma.webp"
-import traumaSpineArtwork from "../images/Spine-Trauma-trauma-care_.webp"
-import rehabilitationArtwork from "../images/Neurorehabilitation-trauma-care.webp"
+import brainTumoursArtwork from "../images/Brain-tumours-new.webp"
+import strokeArtwork from "../images/stroke-new.webp"
+import haemorrhageArtwork from "../images/brain-haemorhage-new.webp"
+import intracranialArtwork from "../images/raised-instracanial-pressure-new.webp"
+import headInjuryArtwork from "../images/head-injury-new.webp"
+import bannerArtwork from "../images/expertise-banner-new.webp"
+import degenerativeSpineArtwork from "../images/degenerative-spine-new.webp"
+import slipDiscArtwork from "../images/slip-disc-new.webp"
+import cordCompressionArtwork from "../images/spinal-cord-compression-new.webp"
+import spineTraumaArtwork from "../images/spine-trauma-new.webp"
+import traumaHeadArtwork from "../images/head-injury-new.webp"
+import brainTraumaArtwork from "../images/brain-trauma-new.webp"
+import traumaSpineArtwork from "../images/spine-trauma-new.webp"
+import rehabilitationArtwork from "../images/neurorehabilitation-new.webp"
 import "../css/reset.css"
 import "../css/common.css"
 import "../css/expertise.css"
@@ -49,33 +54,66 @@ const traumaCare = [
 function ConditionGrid({ items }) {
   return <div className="expertise-page__grid">
     {items.map(condition => <article id={condition.id} key={condition.id}>
-      <ScrollPanImage src={condition.image} alt="" loading="lazy" width="833" height="633" />
-      <h3>{condition.title}</h3>
-      <p>{condition.text}</p>
+      {condition.cmsImage ? <GatsbyImage image={condition.cmsImage} alt={condition.altText || ""} /> : condition.image ? <ScrollPanImage src={condition.image} alt="" loading="lazy" width="833" height="633" /> : null}
+      <h3>{expertiseIcons[condition.iconId || condition.id] && <img className="expertise-page__condition-icon" src={expertiseIcons[condition.iconId || condition.id]} alt="" loading="lazy" />}<CmsText as="span" html={condition.title} /></h3>
+      <CmsText html={condition.text} />
     </article>)}
   </div>
 }
 
-export default function ExpertisePage() {
+// Only posts with populated expertise fields belong in these grids.
+function expertiseGroups(posts) {
+  const groups = { brain: [], spine: [], trauma: [] }
+  const defaults = [...conditions, ...spineConditions, ...traumaCare]
+  for (const post of posts) {
+    const fields = post.expertisePost
+    if (!fields || !(fields.experienceTitle?.trim() || fields.experiencePara?.trim() || fields.experienceImage?.node)) continue
+    const title = withFallback(fields.experienceTitle, post.title)
+    const plainTitle = paragraphs(title).join(" ").toLowerCase()
+    const fallback = defaults.find(item => item.id === post.slug || item.title.toLowerCase() === plainTitle)
+    const categories = (post.categories?.nodes || []).map(category => category.slug).join(" ")
+    let group = /trauma|rehabilitation|emergency/.test(categories) ? "trauma" : /spine|spinal/.test(categories) ? "spine" : /brain/.test(categories) ? "brain" : null
+    if (!group) group = fallback && traumaCare.includes(fallback) ? "trauma" : fallback && spineConditions.includes(fallback) ? "spine" : /spine|spinal|disc/.test(plainTitle) ? "spine" : /rehabilitation/.test(plainTitle) ? "trauma" : "brain"
+    groups[group].push({
+      id: post.slug || post.id,
+      iconId: fallback?.id,
+      title,
+      text: withFallback(fields.experiencePara, fallback?.text),
+      cmsImage: getImage(fields.experienceImage?.node?.gatsbyImage),
+      altText: fields.experienceImage?.node?.altText,
+      image: fallback?.image,
+    })
+  }
+  return {
+    brain: groups.brain.length ? groups.brain : conditions,
+    spine: groups.spine.length ? groups.spine : spineConditions,
+    trauma: groups.trauma.length ? groups.trauma : traumaCare,
+  }
+}
+
+export default function ExpertisePage({ data }) {
+  const expertise = data?.allWpPage?.edges?.[0]?.node?.expertise || {}
+  const groups = expertiseGroups(data?.allWpPost?.nodes || [])
+  const bannerImage = getImage(expertise.expertisePageImage?.node?.gatsbyImage)
   return <div className="expertise-page">
     <Header />
     <main>
       <section className="expertise-page__intro" aria-labelledby="expertise-title">
-        <h1 id="expertise-title">Brain, Spine <span>&amp;</span> Trauma Care</h1>
-        <ScrollPanImage className="expertise-page__banner" src={bannerArtwork} alt="" width="1717" height="656" fetchPriority="high" />
-        <ReadingCopy className="expertise-page__reading" paragraphs={introParagraphs} />
+        <CmsText as="h1" id="expertise-title" html={withFallback(expertise.expertisePageTitle, "Brain, Spine <span>&amp;</span> Trauma Care")} />
+        {bannerImage ? <GatsbyImage className="expertise-page__banner" image={bannerImage} alt={expertise.expertisePageImage.node.altText || ""} loading="eager" fetchPriority="high" /> : <ScrollPanImage className="expertise-page__banner" src={bannerArtwork} alt="" width="1717" height="656" fetchPriority="high" />}
+        <ReadingCopy className="expertise-page__reading" paragraphs={paragraphs(withFallback(expertise.expertisePara, introParagraphs.join("\n\n")))} />
       </section>
       <section className="expertise-page__conditions" id="brain-conditions" aria-labelledby="brain-conditions-title">
-        <h2 id="brain-conditions-title">Brain <span>Conditions</span></h2>
-        <ConditionGrid items={conditions} />
+        <CmsText as="h2" id="brain-conditions-title" html={withFallback(expertise.brainConditionsTitle, "Brain <span>Conditions</span>")} />
+        <ConditionGrid items={groups.brain} />
       </section>
       <section className="expertise-page__conditions expertise-page__conditions--spine" id="spine-conditions" aria-labelledby="spine-conditions-title">
         <h2 id="spine-conditions-title">Spine <span>Conditions</span></h2>
-        <ConditionGrid items={spineConditions} />
+        <ConditionGrid items={groups.spine} />
       </section>
       <section className="expertise-page__conditions expertise-page__conditions--trauma" id="trauma-care" aria-labelledby="trauma-care-title">
         <h2 id="trauma-care-title">Neurosurgical <span>&amp;</span> Trauma Care</h2>
-        <ConditionGrid items={traumaCare} />
+        <ConditionGrid items={groups.trauma} />
       </section>
     </main>
     <Footer />
@@ -83,3 +121,44 @@ export default function ExpertisePage() {
 }
 
 export const Head = () => <title>Expertise | Dr. Nimesh Jain</title>
+
+export const query = graphql`
+  query ExpertisePageQuery {
+    allWpPost(sort: { date: ASC }) {
+      nodes {
+        id
+        slug
+        title
+        categories { nodes { slug } }
+        expertisePost {
+          experienceTitle
+          fieldGroupName
+          experiencePara
+          experienceImage {
+            node {
+              altText
+              gatsbyImage(width: 833, layout: CONSTRAINED, placeholder: BLURRED)
+            }
+          }
+        }
+      }
+    }
+    allWpPage(filter: { databaseId: { eq: 107 } }) {
+      edges {
+        node {
+          expertise {
+            expertisePageTitle
+            expertisePara
+            expertisePageImage {
+              node {
+                altText
+                gatsbyImage(placeholder: BLURRED, layout: CONSTRAINED, width: 1717)
+              }
+            }
+            brainConditionsTitle
+          }
+        }
+      }
+    }
+  }
+`

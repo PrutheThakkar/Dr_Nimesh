@@ -1,4 +1,8 @@
 import * as React from "react"
+import { graphql } from "gatsby"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import { CmsText, paragraphs } from "../components/CmsContent"
+import { withFallback } from "../components/homeDefaults"
 import ReadingCopy from "../components/ReadingCopy"
 import Header from "../components/Header"
 import portrait from "../images/meet-dr-nimesh.webp"
@@ -24,33 +28,53 @@ function ApproachIcon({ type }) {
   </svg>
 }
 
-export default function AboutPage() {
+const qualifications = [
+  { educationName: "M.B.B.S.", educationPara: "Bachelor of Medicine, Bachelor of<br /> Surgery" },
+  { educationName: "M.S. - General Surgery", educationPara: "-" },
+  { educationName: "M.Ch. - Neurosurgery", educationPara: "-" },
+]
+
+export default function AboutPage({ data }) {
+  const about = data?.allWpPage?.edges?.[0]?.node?.aboutPage || {}
+  const doctorImage = getImage(about.aboutImageDoctor?.node?.gatsbyImage)
+  const steps = withFallback(about.aPatientList, approach.map(step => ({ title: step.title, subTitle: step.lead, para: step.text })))
+    .filter(Boolean).map((step, index) => ({
+      title: withFallback(step.title, approach[index]?.title),
+      subTitle: withFallback(step.subTitle, approach[index]?.lead),
+      para: withFallback(step.para, approach[index]?.text),
+      icon: approach[index]?.icon || "support",
+    }))
+  const education = withFallback(about.educationList, qualifications).filter(Boolean).map((item, index) => ({
+    educationName: withFallback(item.educationName, qualifications[index]?.educationName),
+    educationPara: withFallback(item.educationPara, qualifications[index]?.educationPara),
+  }))
   return <div className="about-page">
     <Header />
     <main>
       <section className="about-page__intro" aria-labelledby="about-title">
-        <h1 id="about-title">About <span>Dr. Nimesh Jain</span></h1>
-        <img className="about-page__media" src={portrait} alt="Dr. Nimesh Jain, Consultant Neurosurgeon" />
-        <ReadingCopy className="about-page__bio" paragraphs={biography} />
+        <CmsText as="h1" id="about-title" html={withFallback(about.aboutPageTitle, "About <span>Dr. Nimesh Jain</span>")} />
+        {doctorImage ? <GatsbyImage className="about-page__media" image={doctorImage} alt={about.aboutImageDoctor.node.altText || "Dr. Nimesh Jain, Consultant Neurosurgeon"} loading="eager" /> : <img className="about-page__media" src={portrait} alt="Dr. Nimesh Jain, Consultant Neurosurgeon" />}
+        <ReadingCopy className="about-page__bio" paragraphs={paragraphs(withFallback(about.aboutPagePara, biography.join("\n\n")))} />
       </section>
       <section className="about-page__approach" aria-labelledby="approach-title">
-        <h2 id="approach-title">A Patient-Centred Approach to <span>Neurosurgery</span></h2>
-        <p className="about-page__description">Every neurosurgical condition presents differently.</p>
+        <CmsText as="h2" id="approach-title" html={withFallback(about.aPatientCentredTitle, "A Patient-Centred Approach to <span>Neurosurgery</span>")} />
+        <CmsText className="about-page__description" html={withFallback(about.aPatientSubtitle, "Every neurosurgical condition presents differently.")} />
         <div className="about-page__steps">
-          {approach.map(step => <article key={step.title}>
-            <h3><ApproachIcon type={step.icon} />{step.title}</h3>
-            <p className="about-page__lead">{step.lead}</p>
-            <p>{step.text}</p>
+          {steps.map((step, index) => <article key={index}>
+            <h3><ApproachIcon type={step.icon} /><CmsText as="span" html={step.title} /></h3>
+            <CmsText className="about-page__lead" html={step.subTitle} />
+            <CmsText className="about-page__step-copy" html={step.para} />
           </article>)}
         </div>
       </section>
       <section className="about-page__education" aria-labelledby="education-title">
-        <h2 id="education-title">Education <span>&amp;</span> Qualifications</h2>
-        <p className="about-page__description">Every neurosurgical condition presents differently.</p>
+        <CmsText as="h2" id="education-title" html={withFallback(about.educationTitle, "Education <span>&amp;</span> Qualifications")} />
+        <CmsText className="about-page__description" html={withFallback(about.educationSubtitle, "Every neurosurgical condition presents differently.")} />
         <div className="about-page__qualifications">
-          <article><h3>M.B.B.S.</h3><p>Bachelor of Medicine, Bachelor of<br className="desktop-break" /> Surgery</p></article>
-          <article><h3>M.S. - General Surgery</h3><p>-</p></article>
-          <article><h3>M.Ch. - Neurosurgery</h3><p>-</p></article>
+          {education.map((item, index) => <article key={index}>
+            <CmsText as="h3" html={item.educationName} />
+            <CmsText className="about-page__qualification-copy" html={item.educationPara} />
+          </article>)}
         </div>
       </section>
       <section className="about-page__consults" aria-labelledby="consults-title">
@@ -76,3 +100,31 @@ export default function AboutPage() {
 }
 
 export const Head = () => <title>About Dr. Nimesh Jain | Neurosurgeon</title>
+
+
+export const query = graphql`
+  query AboutPageQuery {
+    allWpPage(filter: { databaseId: { eq: 73 } }) {
+      edges {
+        node {
+          aboutPage {
+            aboutPageTitle
+            aboutImageDoctor {
+              node {
+                altText
+                gatsbyImage(width: 1600, placeholder: BLURRED, layout: CONSTRAINED)
+              }
+            }
+            aboutPagePara
+            aPatientCentredTitle
+            aPatientSubtitle
+            aPatientList { title subTitle para }
+            educationTitle
+            educationSubtitle
+            educationList { educationName educationPara }
+          }
+        }
+      }
+    }
+  }
+`
