@@ -13,7 +13,7 @@ import strokeArtwork from "../images/stroke-new.webp"
 import haemorrhageArtwork from "../images/brain-haemorhage-new.webp"
 import intracranialArtwork from "../images/raised-instracanial-pressure-new.webp"
 import headInjuryArtwork from "../images/head-injury-new.webp"
-import bannerArtwork from "../images/expertise-banner-new.webp"
+import bannerArtwork from "../images/expertise-section-new-banner.webp"
 import degenerativeSpineArtwork from "../images/degenerative-spine-new.webp"
 import slipDiscArtwork from "../images/slip-disc-new.webp"
 import cordCompressionArtwork from "../images/spinal-cord-compression-new.webp"
@@ -93,13 +93,12 @@ function expertiseGroups(posts) {
 export default function ExpertisePage({ data }) {
   const expertise = data?.allWpPage?.edges?.[0]?.node?.expertise || {}
   const groups = expertiseGroups(data?.allWpPost?.nodes || [])
-  const bannerImage = getImage(expertise.expertisePageImage?.node?.gatsbyImage)
   return <div className="expertise-page">
     <Header />
     <main>
       <section className="expertise-page__intro" aria-labelledby="expertise-title">
         <CmsText as="h1" id="expertise-title" html={withFallback(expertise.expertisePageTitle, "Brain, Spine <span>&amp;</span> Trauma Care")} />
-        {bannerImage ? <GatsbyImage className="expertise-page__banner" image={bannerImage} alt={expertise.expertisePageImage.node.altText || ""} loading="eager" fetchPriority="high" /> : <ScrollPanImage className="expertise-page__banner" src={bannerArtwork} alt="" width="1717" height="656" fetchPriority="high" />}
+        <ScrollPanImage className="expertise-page__banner" src={bannerArtwork} alt="" width="1717" height="656" fetchPriority="high" />
         <ReadingCopy className="expertise-page__reading" paragraphs={paragraphs(withFallback(expertise.expertisePara, introParagraphs.join("\n\n")))} />
       </section>
       <section className="expertise-page__conditions" id="brain-conditions" aria-labelledby="brain-conditions-title">

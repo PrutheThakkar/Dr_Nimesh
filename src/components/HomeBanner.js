@@ -14,21 +14,12 @@ export default function HomeBanner() {
       <div className="home-banner__canvas">
         <svg className="home-banner__network" viewBox="0 0 1926 834" focusable="false">
           <defs>
-            <linearGradient id="home-energy-band">
-              <stop offset="0" stopColor="white" stopOpacity="0" />
-              <stop offset=".5" stopColor="white" />
-              <stop offset="1" stopColor="white" stopOpacity="0" />
-            </linearGradient>
-            <mask id="home-energy-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1926" height="834">
-              <rect className="home-banner__sweep" x="-600" y="0" width="600" height="834" fill="url(#home-energy-band)" />
-            </mask>
             <filter id="home-ball-glow" x="-200%" y="-200%" width="500%" height="500%">
               <feGaussianBlur stdDeviation="6" />
             </filter>
           </defs>
           <g className="home-banner__flow">
           <image href={banner} width="1926" height="834" />
-          <image className="home-banner__energy" href={banner} width="1926" height="834" mask="url(#home-energy-mask)" />
           {connections.map(({ path, duration }, index) => (
             <g key={path}>
               <path className="home-banner__stroke" d={path} pathLength="1" style={{ animationDelay: `${index * -2}s` }} />

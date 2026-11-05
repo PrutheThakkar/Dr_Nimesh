@@ -1,5 +1,5 @@
 import * as React from "react"
-import contactArtwork from "../images/contact new.webp"
+import contactArtwork from "../images/contact-page-banner-new.webp"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import "../css/reset.css"
