@@ -1,0 +1,74 @@
+[
+  {
+    "slug": "treatment-for-brain-tumors",
+    "title": "Treatment for Brain Tumors",
+    "category": "Brain Care",
+    "description": "An introduction to the factors that shape brain tumour treatment and recovery planning.",
+    "source": "https://www.nhs.uk/conditions/brain-tumours/",
+    "sections": [
+      { "title": "Understanding the diagnosis", "text": "Brain tumours vary in type, location and how they affect surrounding structures. Some are cancerous and others are non-cancerous. Understanding the diagnosis is the starting point for a discussion about treatment." },
+      { "title": "Discussing treatment options", "text": "Treatment depends on the type of tumour and the individual situation. Options may include surgery, radiotherapy or medicines. Your specialist can explain which approaches are appropriate and what each aims to achieve." },
+      { "title": "Planning ongoing care", "text": "Follow-up and support are part of the treatment journey. Use your consultation to ask about the next steps, recovery expectations and who to contact with concerns." }
+    ]
+  },
+  {
+    "slug": "stroke-recovery-treatment",
+    "title": "Stroke Recovery Treatment",
+    "category": "Brain Care",
+    "description": "Understanding rehabilitation and individual goals following a stroke.",
+    "source": "https://www.nhs.uk/conditions/stroke/recovery/",
+    "sections": [
+      { "title": "A recovery plan for the individual", "text": "Recovery after a stroke varies from person to person. Rehabilitation is shaped by the physical and mental effects of the stroke and the support a person needs." },
+      { "title": "Working with a rehabilitation team", "text": "Rehabilitation may involve physiotherapy, occupational therapy, speech and language therapy or psychological support. The combination depends on the difficulties being addressed." },
+      { "title": "Reviewing progress", "text": "Recovery goals can change over time. Discuss progress, ongoing challenges and support needs with the treating team so the plan remains relevant to everyday life." }
+    ]
+  },
+  {
+    "slug": "spinal-stenosis-treatment",
+    "title": "Spinal Stenosis Treatment",
+    "category": "Spine Care",
+    "description": "A look at spinal narrowing, assessment and the role of treatment planning.",
+    "source": "https://www.nhs.uk/tests-and-treatments/lumbar-decompression-surgery/",
+    "sections": [
+      { "title": "What is spinal stenosis?", "text": "Spinal stenosis is narrowing of spaces in the spine that can put pressure on nerves. Symptoms and their impact need to be considered alongside examination and any relevant imaging." },
+      { "title": "Considering treatment", "text": "Treatment may begin with non-surgical approaches. Lumbar decompression surgery may be considered when these have not helped and symptoms are affecting quality of life." },
+      { "title": "Understanding the aim of surgery", "text": "Decompression aims to relieve pressure on affected nerves. Discuss the potential benefits, risks and recovery expectations with your specialist before deciding on treatment." }
+    ]
+  },
+  {
+    "slug": "slipped-disc-treatment",
+    "title": "Slipped Disc Treatment",
+    "category": "Spine Care",
+    "description": "Understanding a herniated disc and how treatment options are considered.",
+    "source": "https://www.nhs.uk/conditions/slipped-disc/",
+    "sections": [
+      { "title": "Understanding a slipped disc", "text": "A slipped or herniated disc occurs when tissue from a disc between the bones of the spine bulges out. If it presses on a nerve, it can cause pain, tingling, numbness or weakness." },
+      { "title": "Non-surgical care", "text": "Many slipped discs improve without surgery. Treatment can include appropriate pain relief and physiotherapy, guided by a healthcare professional." },
+      { "title": "When surgery is discussed", "text": "Surgery is not usually needed, but a specialist may discuss it if symptoms do not improve or muscle weakness or numbness is worsening. The decision depends on the assessment and individual circumstances." }
+    ]
+  },
+  {
+    "slug": "sciatica-pain-relief",
+    "title": "Sciatica Pain Relief",
+    "category": "Nerve Care",
+    "description": "An overview of sciatic nerve symptoms and the options for professional assessment.",
+    "source": "https://www.nhs.uk/conditions/sciatica/",
+    "sections": [
+      { "title": "Recognising sciatica", "text": "Sciatica describes symptoms caused by irritation or compression of the sciatic nerve. Pain can travel from the buttock down the leg, sometimes with tingling, numbness or weakness." },
+      { "title": "Managing symptoms", "text": "Sciatica often improves over time. A healthcare professional can advise on suitable activity, pain management and physiotherapy based on symptoms and circumstances." },
+      { "title": "Further assessment", "text": "Persistent or worsening symptoms may need further assessment. Specialist treatment can include injections or, in selected cases, surgery to relieve pressure on a nerve." }
+    ]
+  },
+  {
+    "slug": "rehabilitation-after-spine-surgery",
+    "title": "Rehabilitation after Spine Surgery",
+    "category": "Recovery",
+    "description": "Planning a supported return to everyday activities after spine surgery.",
+    "source": "https://www.guysandstthomas.nhs.uk/health-information/recovering-lumbar-spine-decompression-or-discectomy",
+    "sections": [
+      { "title": "Recovery depends on the procedure", "text": "Recovery after spinal decompression or discectomy is individual. Your surgical team will provide guidance appropriate to the operation and your needs." },
+      { "title": "Returning to activity", "text": "Follow the instructions provided by your treating team about movement, exercise and daily activities. Ask for advice about work, lifting and driving rather than relying on a general recovery timetable." },
+      { "title": "Keeping in touch with your team", "text": "Know how to contact the hospital if you have concerns after discharge. Follow-up appointments are an opportunity to review recovery and discuss any ongoing rehabilitation needs." }
+    ]
+  }
+]

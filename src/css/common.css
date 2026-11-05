@@ -375,7 +375,7 @@ body {
 .expertise-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: clamp(16px, 1.3vw, 28px); }
 .expertise-card { position: relative; overflow: hidden; isolation: isolate; min-height: clamp(280px, 23.3vw, 470px); background-color: #ff781c; color: #302f29; display: flex; align-items: flex-end; }
 .expertise-card::before { content: ""; position: absolute; inset: 0; z-index: -2; background-size: cover; background-position: center; background-repeat: no-repeat; transition: transform 650ms ease; }
-.expertise-card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, #f7f3eb 0%, #f7f3ebdd 10%, transparent 55%); }
+.expertise-card::after { content: none; }
 .expertise-card--brain { grid-row: span 2; }
 .expertise-card--brain::before { background-image: url("../images/brain_disorder-new.webp"); }
 .expertise-card--spine::before { background-image: url("../images/spine_disorders.webp"); }
@@ -834,3 +834,29 @@ button, .button, .recovery-footer__booking {
 .conditions-section .condition-card { background: #f7f3eb; }
 .conditions-section .swiper-slide-active .condition-card { background: linear-gradient(180deg, #ff9744 0%, #f7f3eb 100%); }
 .condition-card > div:not(.condition-card__icon) { font-size: clamp(16px, 1.2vw, 24px); line-height: 1.4; }
+
+.contact-page__banner { width: 100%; height: calc(min(89vw, 1760px) * 656 / 1717); object-fit: cover; margin-top: clamp(30px, 2.8vw, 56px); }
+@media (max-width: 600px) {
+  .contact-page__banner { height: calc(89vw * 9 / 16); }
+}
+
+.contact-page__enquiry { margin-top: clamp(48px, 5vw, 96px); }
+.contact-page__enquiry > h2 { text-align: center; font-family: Georgia, serif; font-weight: 400; font-size: clamp(28px, 2.4vw, 46px); }
+.contact-page__form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; max-width: 960px; margin: 32px auto 0; padding: clamp(24px, 3vw, 48px); border: 1px solid #ff6215; background: #fff9f1; }
+.contact-page__field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.contact-page__field--wide, .contact-page__form-note, .contact-page__form-status { grid-column: 1 / -1; }
+.contact-page__field label { font-size: 16px; font-weight: 500; }
+.contact-page__field input, .contact-page__field textarea { width: 100%; padding: 14px 16px; border: 1px solid #b8aa9c; border-radius: 0; background: #fff; color: #302f29; font: inherit; font-size: 16px; }
+.contact-page__field textarea { resize: vertical; min-height: 140px; }
+.contact-page__field input:focus-visible, .contact-page__field textarea:focus-visible { outline: 2px solid #ff6215; outline-offset: 2px; }
+.contact-page__form .button { justify-self: start; min-height: 48px; }
+.contact-page__form-note, .contact-page__form-status { font-size: 14px; line-height: 1.5; }
+.contact-page__form-status:empty { display: none; }
+@media (max-width: 600px) {
+  .contact-page__form { grid-template-columns: 1fr; gap: 20px; }
+}
+
+.contact-page__form .button:disabled { opacity: .55; cursor: not-allowed; }
+
+.expertise-card__details > div { max-width: 28ch; }
+.expertise-card__details p { max-width: 28ch; }

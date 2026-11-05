@@ -71,7 +71,7 @@ export default function Header() {
         }}>
           <a href="/about/">About</a>
           <ExpertiseMenu expandedOnMobile={isCompact && mobileOpen} />
-          <a href="/expertise/">Treatments</a>
+          <a href="/treatment/">Treatments</a>
           <a href="/faq/">FAQ</a>
           <a href="/blogs/">Blogs</a>
           <a className="button button--primary" href="/contact/">Contact</a>

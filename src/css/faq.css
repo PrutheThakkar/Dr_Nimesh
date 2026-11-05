@@ -1,6 +1,6 @@
 .faq-page { position: relative; min-height: 100vh; background: #f8f4ec; }
 .faq-page__intro, .faq-page__content { width: 89%; max-width: 1760px; margin-inline: auto; }
-.faq-page__intro { padding-top: clamp(170px, 14.3vw, 280px); text-align: center; }
+.faq-page__intro { padding-top: clamp(190px, 14vw, 280px); text-align: center; }
 .faq-page h1, .faq-page h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; line-height: 1.25; }
 .faq-page h1 { --font-size-h1: clamp(30px, 2.45vw, 48px); }
 .faq-page__banner { display: block; width: 100%; height: auto; aspect-ratio: 1717 / 656; object-fit: cover; margin-top: clamp(30px, 2.8vw, 56px); }
@@ -35,4 +35,9 @@
   .faq-page__banner { aspect-ratio: 16 / 9; }
   .faq-page__questions { padding-block: 80px; }
   .faq-page h2 br { display: none; }
+}
+
+.faq-page__banner { width: 100%; height: calc(min(89vw, 1760px) * 656 / 1717); object-fit: cover; margin-top: clamp(30px, 2.8vw, 56px); }
+@media (max-width: 600px) {
+  .faq-page__banner { height: calc(89vw * 9 / 16); }
 }

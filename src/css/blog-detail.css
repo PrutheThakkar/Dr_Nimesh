@@ -1,0 +1,42 @@
+.blog-detail { background: #f8f4ec; position: relative; }
+.blog-detail main { overflow: hidden; padding-top: clamp(170px, 13vw, 260px); padding-bottom: clamp(80px, 8vw, 160px); }
+.blog-detail__header, .blog-detail__layout, .blog-detail__related { width: 89%; max-width: 1500px; margin-inline: auto; }
+.blog-detail h1, .blog-detail h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; line-height: 1.2; }
+.blog-detail h1 { --font-size-h1: clamp(34px, 3.4vw, 64px); max-width: 1100px; margin: 20px auto; }
+.blog-detail h2 { --font-size-h2: clamp(26px, 2.1vw, 40px); }
+.blog-detail h2 span { color: #ff6415; }
+.blog-detail p { --font-size-paragraph: clamp(16px, 1.2vw, 21px); line-height: 1.6; }
+.blog-detail__header { text-align: center; }
+.blog-detail__breadcrumbs { display: flex; gap: 12px; flex-wrap: wrap; text-align: left; font-size: 14px; margin-bottom: 48px; }
+.blog-detail__breadcrumbs a:hover, .blog-detail__sidebar a:hover { color: #ff6415; }
+.blog-detail .blog-detail__category { --font-size-paragraph: 14px; color: #df510b; letter-spacing: .09em; text-transform: uppercase; }
+.blog-detail__summary { max-width: 800px; margin-inline: auto; color: #6a665f; }
+.blog-detail__hero { display: block; width: 100%; height: auto; aspect-ratio: 1717 / 656; object-fit: cover; margin-top: 40px; }
+.blog-detail__layout { display: grid; grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr); gap: clamp(40px, 7vw, 120px); margin-top: clamp(48px, 5vw, 90px); }
+.blog-detail__body section { scroll-margin-top: 40px; margin-bottom: 44px; }
+.blog-detail__body h2 { margin-bottom: 22px; }
+.blog-detail__body p { color: #5c5851; }
+.blog-detail__sidebar { align-self: start; padding: 28px; border: 1px solid #ff6415; }
+.blog-detail__sidebar h2 { --font-size-h2: 27px; margin-bottom: 22px; }
+.blog-detail__sidebar nav a { display: block; font-size: 16px; padding-block: 12px; border-bottom: 1px solid #ddd6cb; line-height: 1.4; }
+.blog-detail__consultation { margin-top: 40px; }
+.blog-detail__consultation p { --font-size-paragraph: 16px; margin-bottom: 24px; }
+.blog-detail__consultation .button { white-space: normal; text-align: center; }
+.blog-detail__reference a { text-decoration: underline; text-underline-offset: 4px; }
+.blog-detail__back { display: inline-block; margin-top: 32px; font-size: 16px; color: #df510b; }
+.blog-detail__related { margin-top: clamp(70px, 8vw, 140px); }
+.blog-detail__related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; margin-top: 36px; }
+.blog-detail__related-grid img { display: block; width: 100%; height: auto; aspect-ratio: 833 / 430; object-fit: cover; }
+.blog-detail__related-grid .blog-detail__category { margin-top: 24px; }
+.blog-detail__related-grid h3 { font-size: clamp(20px, 1.6vw, 28px); font-weight: 500; margin-top: 10px; }
+.blog-detail__read-more { display: inline-block; font-size: 16px; color: #df510b; margin-top: 20px; }
+.blog-detail a:focus-visible { outline: 2px solid #ff6415; outline-offset: 5px; }
+@media (max-width: 900px) {
+  .blog-detail main { padding-top: 54px; }
+  .blog-detail__layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .blog-detail__related-grid { grid-template-columns: 1fr; }
+  .blog-detail__hero { aspect-ratio: 16 / 9; }
+  .blog-detail__breadcrumbs { margin-bottom: 30px; }
+}

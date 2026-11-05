@@ -13,9 +13,9 @@ import "swiper/css"
 import { conditionIcons } from "../components/medicalIcons"
 import { mergeHome, ConditionIcon } from "../components/homeDefaults"
 import heroBanner from "../images/banner_image-new.webp"
-import brainImage from "../images/brain_disorder-new.webp"
-import spineImage from "../images/spine_disorders-new.webp"
-import traumaImage from "../images/trauma_and_emergency_care-new.webp"
+import brainImage from "../images/Brain-Disorder.jpg"
+import spineImage from "../images/Spine-Disorders.jpg"
+import traumaImage from "../images/Trauma-Emergency-Care.jpg"
 import meetDrNimesh from "../images/meet-dr-nimesh.webp"
 import "../css/reset.css"
 import "../css/common.css"
@@ -44,10 +44,9 @@ function ExpertiseSection({ items }) {
         <h2 id="expertise-heading">Area Of <span>Expertise</span></h2>
         <div className="expertise-grid">
           {items.map((item, index) => {
-            const image = getImage(item.areaImage?.node?.gatsbyImage)
             const link = item.areaLinkRedirect
             return <article className={`expertise-card${index === 0 ? " expertise-card--featured" : ""}`} key={index} tabIndex={0} aria-labelledby={`expertise-${index}`}>
-              {image ? <GatsbyImage className="expertise-card__image" image={image} alt={item.areaImage.node.altText || ""} /> : <img className="expertise-card__image" src={[brainImage, spineImage, traumaImage][index % 3]} alt="" loading="lazy" />}
+              <img className="expertise-card__image" src={[brainImage, spineImage, traumaImage][index % 3]} alt="" loading="lazy" />
               <div className="expertise-card__content">
                 <CmsText as="h3" id={`expertise-${index}`} html={item.areaTitle} />
                 <div className="expertise-card__reveal">

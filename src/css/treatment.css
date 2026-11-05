@@ -1,0 +1,61 @@
+.treatment-page { position: relative; background: #f8f4ec; }
+.treatment-page main { position: relative; isolation: isolate; overflow: hidden; padding-bottom: clamp(100px, 13vw, 250px); }
+.treatment-page main::before { content: ""; position: absolute; z-index: -1; inset: 23% 0 0; background: url("../images/grey-bg.png") center top / 100% auto repeat-y; opacity: .22; pointer-events: none; }
+.treatment-page__intro, .treatment-page__conditions, .treatment-page__why { width: 89%; max-width: 1760px; margin-inline: auto; }
+.treatment-page h1, .treatment-page h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; line-height: 1.25; }
+.treatment-page h1 span, .treatment-page h2 span { color: #ff6215; }
+.treatment-page h1 { --font-size-h1: clamp(32px, 3vw, 60px); }
+.treatment-page h2 { --font-size-h2: clamp(26px, 2.4vw, 46px); }
+.treatment-page main p { --font-size-paragraph: clamp(16px, 1.25vw, 24px); line-height: 1.35; }
+.treatment-page__intro { padding-top: clamp(190px, 14.5vw, 290px); text-align: center; }
+.treatment-page__banner { display: block; width: 100%; height: auto; aspect-ratio: 1717 / 656; object-fit: cover; margin-top: clamp(30px, 2.5vw, 50px); }
+.treatment-page__intro p { margin: clamp(30px, 2.8vw, 56px) auto 0; max-width: 1240px; }
+.treatment-page__conditions { margin-top: clamp(48px, 5vw, 96px); }
+.treatment-page__conditions > h2 { text-align: center; }
+.treatment-page__slider { position: relative; padding-bottom: 76px; margin-top: clamp(28px, 2.6vw, 52px); }
+.treatment-page__slider .swiper-slide { height: auto; }
+.treatment-page__slider .swiper-wrapper { align-items: stretch; }
+.treatment-page__slide { height: 100%; display: flex; flex-direction: column; }
+.treatment-page__slide > img { width: 100%; aspect-ratio: 16 / 9; height: auto; object-fit: cover; }
+.treatment-page__slide-copy { padding: 24px 0 0; }
+.treatment-page h3 { font-size: clamp(19px, 1.6vw, 30px); font-weight: 500; line-height: 1.3; }
+.treatment-page__slide-copy p { margin-top: 14px; }
+.treatment-page__controls { position: absolute; bottom: 0; inset-inline: 0; z-index: 1; display: flex; justify-content: space-between; pointer-events: none; }
+.treatment-page__controls button { pointer-events: auto; display: grid; place-items: center; width: 44px; height: 44px; padding: 10px; background: #ff6215; border: 1px solid #ff6215; border-radius: 50%; color: #fff; cursor: pointer; box-shadow: 0 3px 10px #56321a20; }
+.treatment-page__controls svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; }
+.treatment-page__controls button:hover { background: #c94300; border-color: #c94300; }
+.treatment-page__slider:focus-visible, .treatment-page__controls button:focus-visible, .treatment-page__pagination button:focus-visible { outline: 2px solid #ff6215; outline-offset: 4px; }
+.treatment-page__why { margin-top: clamp(48px, 5vw, 96px); }
+.treatment-page__why > h2, .treatment-page__why > p { text-align: center; }
+.treatment-page__why > p { margin: clamp(28px, 2.8vw, 56px) auto 0; max-width: 1540px; width: 90%; }
+.treatment-page__benefits { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 2.6vw, 52px); margin-top: clamp(28px, 2.8vw, 56px); }
+.treatment-page__benefits article { border: 1px solid #ff6215; padding: clamp(24px, 2.8vw, 56px); background: #f8f4ecb8; }
+.treatment-page__benefits img { display: block; width: clamp(80px, 8vw, 150px); height: clamp(80px, 8vw, 150px); object-fit: contain; margin-bottom: 20px; }
+.treatment-page__benefits p { margin-top: clamp(20px, 2vw, 40px); }
+.treatment-page__sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 900px) {
+  .treatment-page__intro { padding-top: 54px; }
+  .treatment-page__desktop-break { display: none; }
+  .treatment-page__conditions { margin-top: 48px; }
+  .treatment-page__why { margin-top: 48px; }
+}
+@media (max-width: 600px) {
+  .treatment-page__slide, .treatment-page__benefits { grid-template-columns: 1fr; }
+  .treatment-page__slide > img { aspect-ratio: 16 / 9; }
+  .treatment-page__banner { aspect-ratio: 16 / 9; }
+  .treatment-page__why > p { width: 100%; }
+  .treatment-page__benefits img { margin-bottom: 16px; }
+}
+
+@media (max-width: 600px) {
+  .treatment-page__slider { padding-bottom: 76px; }
+}
+
+.treatment-page__pagination { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); display: flex; align-items: center; }
+.treatment-page__pagination button { display: grid; place-items: center; width: 36px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.treatment-page__pagination button span { width: 10px; height: 10px; border: 1px solid #a44718; border-radius: 50%; background: #e7c2ad; }
+.treatment-page__pagination button[aria-current="true"] span { background: #ff6215; border-color: #c94300; width: 14px; height: 14px; }
+.treatment-page__pagination button:hover span { background: #c94300; }
+@media (max-width: 380px) {
+  .treatment-page__pagination button { width: 28px; }
+}

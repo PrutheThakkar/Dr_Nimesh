@@ -16,8 +16,8 @@ body .blogs-page__card a:hover img { filter: saturate(1.15); }
 body .blogs-page__card a:hover h3 { color: #b84309; }
 body .about-page__media { object-fit: cover; object-position: center 30%; }
 body .contact-page { background: #f8f4ec; min-height: 100vh; }
-body .contact-page__content { width: 89%; max-width: 1200px; margin: auto; padding: clamp(180px, 15vw, 280px) 0 100px; }
-body .contact-page h1 { --font-size-h1: clamp(34px, 4vw, 60px); font-family: Georgia, serif; font-weight: 400; margin-bottom: 24px; }
+body .contact-page__content { width: 89%; max-width: 1760px; margin: auto; padding: clamp(190px, 14vw, 280px) 0 100px; }
+body .contact-page h1 { --font-size-h1: clamp(30px, 2.45vw, 48px); font-family: Georgia, serif; font-weight: 400; line-height: 1.25; text-align: center; margin-bottom: 24px; }
 body .contact-page__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; align-items: center; }
 body .contact-page__grid iframe { width: 100%; min-height: 360px; border: 0; border-radius: 8px; }
 body .contact-page__grid p { margin-block: 20px; }
@@ -88,3 +88,7 @@ body .faq-page__banner {
   z-index: 5;
   isolation: isolate;
 }
+
+body .contact-page__content > p { text-align: center; }
+
+body .contact-page__enquiry + .contact-page__grid { margin-top: clamp(64px, 6vw, 120px); }

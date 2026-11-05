@@ -1,4 +1,3 @@
-import { expertiseIcons } from "../components/medicalIcons"
 import ReadingCopy from "../components/ReadingCopy"
 
 import * as React from "react"
@@ -55,7 +54,7 @@ function ConditionGrid({ items }) {
   return <div className="expertise-page__grid">
     {items.map(condition => <article id={condition.id} key={condition.id}>
       {condition.cmsImage ? <GatsbyImage image={condition.cmsImage} alt={condition.altText || ""} /> : condition.image ? <ScrollPanImage src={condition.image} alt="" loading="lazy" width="833" height="633" /> : null}
-      <h3>{expertiseIcons[condition.iconId || condition.id] && <img className="expertise-page__condition-icon" src={expertiseIcons[condition.iconId || condition.id]} alt="" loading="lazy" />}<CmsText as="span" html={condition.title} /></h3>
+      <CmsText as="h3" html={condition.title} />
       <CmsText html={condition.text} />
     </article>)}
   </div>

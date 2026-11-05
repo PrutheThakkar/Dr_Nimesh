@@ -11,27 +11,29 @@
 .about-page__approach::before { content: ""; position: absolute; z-index: -1; inset: 0 calc((100% - 100vw) / 2); background: url("../images/grey-bg.png") right top / 100% auto no-repeat; background-position: right calc(-1 * clamp(100px, 14vw, 280px)); pointer-events: none; }
 .about-page h2 { font-size: clamp(28px, 2.45vw, 40px); }
 .about-page__description { margin-top: 38px; font-size: 16px; }
-.about-page__steps { padding: 62px 18px 0; }
-.about-page__steps article + article { margin-top: 76px; }
-.about-page__steps h3 { display: flex; align-items: center; gap: 9px; color: #ff6415; font-size: 21px; font-weight: 500; margin-bottom: 20px; }
-.about-page__steps svg { width: 19px; height: 22px; flex-shrink: 0; }
-.about-page__steps p { font-size: 16px; line-height: 1.4; }
+.about-page__steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 62px; }
+.about-page__steps article { min-width: 0; padding: clamp(24px, 2.5vw, 48px); border: 1px solid #ff9744; background: linear-gradient(180deg, #ffb16e 0%, #ffead6 100%); }
+.about-page__approach-icon { color: #ff6415; margin-bottom: clamp(40px, 5vw, 100px); }
+.about-page__approach-icon svg { width: clamp(65px, 6vw, 110px); height: clamp(65px, 6vw, 110px); }
+.about-page__steps h3 { font-size: clamp(23px, 2vw, 34px); font-weight: 600; margin-bottom: 30px; line-height: 1.25; }
+.about-page__steps p { line-height: 1.45; }
 .about-page__lead { font-weight: 500; margin-bottom: 22px; }
+.about-page__approach > h2, .about-page__approach > .about-page__description { text-align: center; }
 @media (max-width: 900px) {
   .about-page__intro { padding-top: 54px; }
   .about-page__approach { margin-top: 90px; padding-bottom: 80px; }
   .about-page__media { aspect-ratio: 16 / 9; }
-  .about-page__steps { padding: 40px 0 0; }
-  .about-page__steps article + article { margin-top: 48px; }
+  .about-page__steps { margin-top: 40px; gap: 16px; }
 }
 
 .about-page__education, .about-page__consults { width: 89%; max-width: 1600px; margin-inline: auto; }
 .about-page__education { padding-top: 40px; text-align: center; }
 .about-page__education .about-page__description { margin-top: 44px; }
 .about-page__qualifications { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 42px; margin-top: 46px; }
-.about-page__qualifications article { border: 1px solid #ff6415; min-height: 145px; padding: 20px 18px 14px; display: flex; flex-direction: column; align-items: center; }
-.about-page__qualifications h3 { font-size: clamp(20px, 1.55vw, 26px); font-weight: 600; margin-bottom: 24px; }
-.about-page__qualifications p { font-size: clamp(16px, 1.2vw, 20px); line-height: 1.25; }
+.about-page__qualifications article { border: 1px solid #ff6415; min-height: 145px; padding: 28px 24px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 20px; }
+.about-page__qualifications h3 { font-size: clamp(20px, 1.55vw, 26px); font-weight: 600; line-height: 1.3; margin: 0; min-height: 2.6em; display: flex; align-items: center; justify-content: center; }
+.about-page__qualifications p { margin: 0; font: inherit; }
+.about-page__qualifications h3 strong, .about-page__qualifications h3 b { font-weight: inherit; }
 .about-page__consults { margin-top: 210px; padding-bottom: 210px; }
 .about-page__consultation { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 44px; margin-top: 44px; }
 .about-page__map { width: 100%; aspect-ratio: 870 / 550; border: 0; background: #e5e5e5; }
@@ -46,7 +48,7 @@
   .about-page__consultation-details { gap: 24px; }
 }
 @media (max-width: 600px) {
-  .about-page__qualifications, .about-page__consultation { grid-template-columns: 1fr; }
+  .about-page__steps, .about-page__qualifications, .about-page__consultation { grid-template-columns: 1fr; }
   .about-page__education .about-page__description { margin-top: 24px; }
   .about-page__qualifications { margin-top: 28px; }
   .about-page__qualifications article { min-height: 130px; }
@@ -81,5 +83,5 @@
 
 /* Keep CMS rich text aligned with the original paragraph styles. */
 .about-page__step-copy { font-size: 16px; line-height: 1.4; }
-.about-page__qualification-copy { font-size: clamp(16px, 1.2vw, 20px); line-height: 1.25; }
+.about-page__qualification-copy { width: 100%; max-width: 34ch; font-size: 16px; font-weight: 400; line-height: 1.5; text-align: center; }
 .about-page__lead { font-size: 16px; line-height: 1.4; }

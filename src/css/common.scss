@@ -187,7 +187,7 @@ body { color: #302f29; font-family: "Century Gothic", "Avenir Next", Arial, sans
 .expertise-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: clamp(16px, 1.3vw, 28px); }
 .expertise-card { position: relative; overflow: hidden; isolation: isolate; min-height: clamp(280px, 23.3vw, 470px); background-color: #ff781c; color: #302f29; display: flex; align-items: flex-end; }
 .expertise-card::before { content: ""; position: absolute; inset: 0; z-index: -2; background-size: cover; background-position: center; background-repeat: no-repeat; transition: transform 650ms ease; }
-.expertise-card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, #f7f3eb 0%, #f7f3ebdd 10%, transparent 55%); }
+.expertise-card::after { content: none; }
 .expertise-card--brain { grid-row: span 2; }
 .expertise-card--brain::before { background-image: url("../images/brain_disorder-new.webp"); }
 .expertise-card--spine::before { background-image: url("../images/spine_disorders.webp"); }
@@ -620,3 +620,6 @@ button, .button, .recovery-footer__booking {
 @media (prefers-reduced-motion: reduce) {
   .about-section__intro .reading-word { transition: none; }
 }
+
+.expertise-card__details > div { max-width: 28ch; }
+.expertise-card__details p { max-width: 28ch; }
