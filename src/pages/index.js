@@ -1,6 +1,6 @@
 import * as React from "react"
 import { graphql } from "gatsby"
-import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import HomeBanner from "../components/HomeBanner"
 import sanitizeHtml from "sanitize-html"
 import { CmsText, paragraphs } from "../components/CmsContent"
 import ReadingCopy from "../components/ReadingCopy"
@@ -12,7 +12,6 @@ import { Autoplay, A11y, Keyboard } from "swiper/modules"
 import "swiper/css"
 import { conditionIcons } from "../components/medicalIcons"
 import { mergeHome, ConditionIcon } from "../components/homeDefaults"
-import heroBanner from "../images/banner_image-new.webp"
 import brainImage from "../images/Brain-Disorder.jpg"
 import spineImage from "../images/Spine-Disorders.jpg"
 import traumaImage from "../images/Trauma-Emergency-Care.jpg"
@@ -166,14 +165,11 @@ function ConditionsSection({ title, items }) {
 
 const IndexPage = ({ data }) => {
   const home = mergeHome(data?.allWpPage?.edges?.[0]?.node?.homePage || {})
-  const heroImage = getImage(home.pageBackgroundImage?.node?.gatsbyImage)
   return (
   <main>
     <section className="hero" aria-labelledby="hero-heading">
       <Header />
-      <div className="hero__image">
-        {heroImage ? <GatsbyImage image={heroImage} alt={home.pageBackgroundImage.node.altText || ""} loading="eager" fetchPriority="high" /> : <img src={heroBanner} alt="Soft orange waves and glowing interconnected points on a cream background" fetchPriority="high" />}
-      </div>
+      <HomeBanner />
       <div className="hero__content">
         <CmsText as="h1" id="hero-heading" html={home.pageTitle} />
         <CmsText className="hero__subtitle" html={home.pageSubtitle} />

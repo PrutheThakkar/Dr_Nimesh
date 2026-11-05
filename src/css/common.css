@@ -860,3 +860,67 @@ button, .button, .recovery-footer__booking {
 
 .expertise-card__details > div { max-width: 28ch; }
 .expertise-card__details p { max-width: 28ch; }
+
+/* PNG and vector overlays share one canvas, keeping strokes aligned on resize. */
+.hero .home-banner {
+  pointer-events: none;
+  background: #f8f7f2;
+}
+.home-banner__canvas {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 1926 / 834;
+}
+.home-banner__art,
+.home-banner__network {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.home-banner__art {
+  object-fit: contain;
+}
+.home-banner__network { overflow: visible; }
+.home-banner__stroke {
+  fill: none;
+  stroke: #ff951f;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: .09 .91;
+  animation: home-stroke-travel 9s linear infinite;
+}
+.home-banner__pulse {
+  fill: #ff931e;
+  filter: url(#home-ball-glow);
+  animation: home-node-pulse 4s ease-in-out infinite;
+}
+@keyframes home-stroke-travel {
+  from { stroke-dashoffset: 1; opacity: .3; }
+  50% { opacity: .9; }
+  to { stroke-dashoffset: 0; opacity: .3; }
+}
+@keyframes home-node-pulse {
+  0%, 100% { opacity: .15; }
+  50% { opacity: .7; }
+}
+.home-banner__energy { filter: brightness(1.3) saturate(1.65); }
+.home-banner__sweep { animation: home-energy-sweep 7s ease-in-out infinite; }
+@keyframes home-energy-sweep {
+  from { transform: translateX(0); }
+  85%, to { transform: translateX(2600px); }
+}
+@media (max-width: 600px) {
+  .home-banner__canvas { width: 160%; left: -30%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-banner__energy { display: none; }
+  .home-banner__sweep { animation: none; }
+  .home-banner__stroke, .home-banner__pulse { animation: none; }
+  .home-banner__stroke { opacity: .3; stroke-dasharray: none; }
+  .home-banner__pulse { opacity: .2; }
+  .home-banner__ball { display: none; }
+}
