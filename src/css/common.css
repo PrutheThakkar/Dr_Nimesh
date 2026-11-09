@@ -860,7 +860,7 @@ button, .button, .recovery-footer__booking {
 .expertise-card__details > div { max-width: 28ch; }
 .expertise-card__details p { max-width: 28ch; }
 
-/* PNG and vector overlays share one canvas, keeping strokes aligned on resize. */
+/* Original PNG and animated light effects share one responsive canvas. */
 .hero .home-banner {
   pointer-events: none;
   background: #f8f7f2;
@@ -894,7 +894,6 @@ button, .button, .recovery-footer__booking {
 }
 .home-banner__pulse {
   fill: #ff931e;
-  filter: url(#home-ball-glow);
   animation: home-node-pulse 4s ease-in-out infinite;
 }
 @keyframes home-stroke-travel {
