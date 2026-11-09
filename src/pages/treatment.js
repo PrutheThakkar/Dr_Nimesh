@@ -1,4 +1,7 @@
 import * as React from "react"
+import { graphql } from "gatsby"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import { CmsText } from "../components/CmsContent"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { A11y } from "swiper/modules"
 import "swiper/css"
@@ -30,7 +33,24 @@ const benefits = [
   { title: "Care Beyond Surgery", icon: "trauma", text: "Follow-up and rehabilitation form an important part of recovery following neurosurgical treatment." },
 ]
 
-export default function TreatmentPage() {
+export default function TreatmentPage({ data }) {
+  const content = data?.allWpPage?.edges?.[0]?.node?.treatment || {}
+  const bannerImage = getImage(content.treatmentPageImage?.node?.gatsbyImage)
+  const cmsTreatments = content.treatmentBasedSwiper?.filter(Boolean) || []
+  const slides = cmsTreatments.length ? cmsTreatments.map((item, index) => ({
+    title: item.treatmentBasedTitle || treatments[index]?.title || "Treatment",
+    text: item.treatmentBasedPara || treatments[index]?.text || "",
+    cmsImage: getImage(item.treatmentBasedImage?.node?.gatsbyImage),
+    image: treatments[index]?.image,
+    altText: item.treatmentBasedImage?.node?.altText || "",
+  })) : treatments
+  const cmsBenefits = content.whyDrList?.filter(Boolean) || []
+  const benefitItems = cmsBenefits.length ? cmsBenefits.map((item, index) => ({
+    title: item.title || benefits[index]?.title || "",
+    text: item.para || benefits[index]?.text || "",
+    image: item.icon?.node?.mediaItemUrl || conditionIcons[benefits[index]?.icon],
+    altText: item.icon?.node?.altText || "",
+  })) : benefits.map(item => ({ ...item, image: conditionIcons[item.icon] }))
   const swiperRef = React.useRef(null)
   const [activeSlide, setActiveSlide] = React.useState(0)
   const [reducedMotion, setReducedMotion] = React.useState(false)
@@ -47,9 +67,9 @@ export default function TreatmentPage() {
     <Header />
     <main>
       <section className="treatment-page__intro" aria-labelledby="treatment-title">
-        <h1 id="treatment-title">Treatments <span>&amp;</span> Procedures</h1>
-        <img className="treatment-page__banner" src={banner} alt="" width="1717" height="656" fetchPriority="high" />
-        <p>Neurosurgery is not a single treatment pathway. The appropriate treatment depends on the diagnosis,<br className="treatment-page__desktop-break" /> severity of the condition, neurological function and overall health of the patient.<br className="treatment-page__desktop-break" /> Dr. Nimesh Jain evaluates these factors before recommending a treatment approach.</p>
+        <CmsText as="h1" id="treatment-title" html={content.treatmentPageTitle || "Treatments <span>&amp;</span> Procedures"} />
+        {bannerImage ? <GatsbyImage className="treatment-page__banner" image={bannerImage} alt={content.treatmentPageImage.node.altText || ""} loading="eager" /> : <img className="treatment-page__banner" src={banner} alt="" width="1717" height="656" fetchPriority="high" />}
+        <CmsText className="treatment-page__intro-copy" html={content.treatmentPagePara || "Neurosurgery is not a single treatment pathway. The appropriate treatment depends on the diagnosis, severity of the condition, neurological function and overall health of the patient. Dr. Nimesh Jain evaluates these factors before recommending a treatment approach."} />
       </section>
       <section className="treatment-page__conditions" aria-labelledby="conditions-title">
         <h2 id="conditions-title">Treatment Based On <span>The Condition</span></h2>
@@ -73,19 +93,19 @@ export default function TreatmentPage() {
             grabCursor
             a11y={{ slideLabelMessage: "Treatment {{index}} of {{slidesLength}}" }}
           >
-            {treatments.map(treatment => <SwiperSlide key={treatment.title}>
+            {slides.map((treatment, index) => <SwiperSlide key={`${treatment.title}-${index}`}>
               <article className="treatment-page__slide">
-                <img src={treatment.image} alt="" width="833" height="633" loading="lazy" draggable={false} />
+                {treatment.cmsImage ? <GatsbyImage image={treatment.cmsImage} alt={treatment.altText} /> : treatment.image ? <img src={treatment.image} alt="" width="833" height="633" loading="lazy" draggable={false} /> : null}
                 <div className="treatment-page__slide-copy">
-                  <h3>{treatment.title}</h3>
-                  <p>{treatment.text}</p>
+                  <CmsText as="h3" html={treatment.title} />
+                  <CmsText html={treatment.text} />
                 </div>
               </article>
             </SwiperSlide>)}
           </Swiper>
           <div className="treatment-page__pagination" role="group" aria-label="Choose a treatment slide">
-            {treatments.map((treatment, index) => <button
-              key={treatment.title}
+            {slides.map((treatment, index) => <button
+              key={`${treatment.title}-${index}`}
               type="button"
               aria-label={`Show ${treatment.title}`}
               aria-controls="treatment-swiper"
@@ -100,13 +120,13 @@ export default function TreatmentPage() {
         </div>
       </section>
       <section className="treatment-page__why" aria-labelledby="why-title">
-        <h2 id="why-title">Why <span>Dr Nimesh Jain</span>?</h2>
-        <p>Brain and spine conditions can affect much more than a patient’s physical health. They can influence mobility, independence, communication and everyday life. Dr. Nimesh Jain approaches neurosurgical care with attention to both the underlying condition and its effect on neurological function.</p>
+        <CmsText as="h2" id="why-title" html={content.nimeshJainTitle || "Why <span>Dr Nimesh Jain</span>?"} />
+        <CmsText className="treatment-page__why-copy" html={content.nimeshJainPara || "Brain and spine conditions can affect much more than a patient’s physical health. They can influence mobility, independence, communication and everyday life. Dr. Nimesh Jain approaches neurosurgical care with attention to both the underlying condition and its effect on neurological function."} />
         <div className="treatment-page__benefits">
-          {benefits.map(benefit => <article key={benefit.title}>
-            <img src={conditionIcons[benefit.icon]} alt="" width="140" height="140" loading="lazy" />
-            <h3>{benefit.title}</h3>
-            <p>{benefit.text}</p>
+          {benefitItems.map((benefit, index) => <article key={`${benefit.title}-${index}`}>
+            {benefit.image && <img src={benefit.image} alt={benefit.altText || ""} width="140" height="140" loading="lazy" />}
+            <CmsText as="h3" html={benefit.title} />
+            <CmsText html={benefit.text} />
           </article>)}
         </div>
       </section>
@@ -119,3 +139,41 @@ export const Head = () => <>
   <title>Treatments &amp; Procedures | Dr. Nimesh Jain</title>
   <meta name="description" content="Explore Dr. Nimesh Jain’s approach to brain tumour surgery, brain haemorrhage, spine surgery, emergency neurosurgery and postoperative care." />
 </>
+
+export const query = graphql`
+  query TreatmentPageQuery {
+    allWpPage(filter: { slug: { eq: "treatment" } }) {
+      edges {
+        node {
+          treatment {
+            treatmentPageTitle
+            treatmentPagePara
+            treatmentPageImage {
+              node {
+                altText
+                gatsbyImage(width: 1717, layout: CONSTRAINED, quality: 85, placeholder: BLURRED)
+              }
+            }
+            treatmentBasedSwiper {
+              treatmentBasedTitle
+              treatmentBasedPara
+              treatmentBasedImage {
+                node {
+                  altText
+                  gatsbyImage(width: 833, layout: CONSTRAINED, quality: 85, placeholder: BLURRED)
+                }
+              }
+            }
+            nimeshJainTitle
+            nimeshJainPara
+            whyDrList {
+              icon { node { mediaItemUrl altText } }
+              title
+              para
+            }
+          }
+        }
+      }
+    }
+  }
+`

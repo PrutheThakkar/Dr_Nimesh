@@ -80,7 +80,7 @@
 }
 body {
   color: #302f29;
-  font-family: "Century Gothic", "Avenir Next", Arial, sans-serif;
+  font-family: var(--font-family-site);
   background: #f8f4ec;
 }
 
@@ -154,7 +154,6 @@ body {
 }
 
 .hero__content h1 {
-  font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(40px, 2.5vw, 56px);
   font-weight: 400;
   line-height: 1.3;
@@ -304,9 +303,9 @@ body {
 .about-section__content { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.85fr); gap: clamp(36px, 5vw, 104px); align-items: start; }
 .about-section__portrait { width: 100%; aspect-ratio: 0.96; object-fit: cover; object-position: center top; }
 .about-section__portrait--placeholder { display: flex; align-items: end; padding: 32px; background: linear-gradient(135deg, #dadfd3, #f7f3eb 85%); color: #55544e; }
-.about-section__portrait--placeholder span { font-family: Georgia, serif; font-size: 26px; }
-.about-section__portrait--placeholder small { display: block; margin-top: 8px; font: 14px "Avenir Next", Arial, sans-serif; }
-.about-section__bio h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; font-size: clamp(32px, 2.6vw, 54px); line-height: 1.2; margin-bottom: clamp(28px, 2.8vw, 58px); }
+.about-section__portrait--placeholder span { font-size: 26px; }
+.about-section__portrait--placeholder small { display: block; margin-top: 8px; font: 14px var(--font-family-site); }
+.about-section__bio h2 { font-weight: 400; font-size: clamp(32px, 2.6vw, 54px); line-height: 1.2; margin-bottom: clamp(28px, 2.8vw, 58px); }
 .about-section__bio h2 span { color: #ff6415; }
 .about-section__intro { --font-size-paragraph: 22px; font-size: var(--font-size-paragraph); line-height: 1.5; color: #898780; }
 @media (max-width: 1024px) {
@@ -335,7 +334,7 @@ body {
 /* Care philosophy section. */
 .care-section { position: relative; isolation: isolate; background: #f7f3eb; padding-block: 0 clamp(96px, 9vw, 180px); }
 .care-section__content { position: relative; z-index: 1; }
-.care-section h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; font-size: clamp(30px, 2.6vw, 54px); line-height: 1.18; }
+.care-section h2 { font-weight: 400; font-size: clamp(30px, 2.6vw, 54px); line-height: 1.18; }
 .care-section h2 span { color: #ff6415; }
 .care-section__copy { --font-size-paragraph: 22px; width: 88%; max-width: 1100px; margin-left: auto; margin-top: clamp(64px, 5.8vw, 120px); text-align: right; font-size: var(--font-size-paragraph); line-height: 1.5; color: #898780; }
 @media (max-width: 1024px) {
@@ -370,7 +369,7 @@ body {
 
 /* Expertise cards: the title rises as the description and action unfold. */
 .expertise-section { background: #2e2d27; color: #f7f3eb; padding-block: clamp(64px, 6vw, 120px) clamp(80px, 11vw, 220px); }
-.expertise-section h2 { text-align: center; font: 400 clamp(32px, 2.6vw, 54px)/1.2 Georgia, "Times New Roman", serif; margin-bottom: clamp(36px, 3vw, 64px); }
+.expertise-section h2 { text-align: center; font: 400 clamp(32px, 2.6vw, 54px)/1.2 var(--font-family-site); margin-bottom: clamp(36px, 3vw, 64px); }
 .expertise-section h2 span { color: #ff6415; }
 .expertise-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: clamp(16px, 1.3vw, 28px); }
 .expertise-card { position: relative; overflow: hidden; isolation: isolate; min-height: clamp(280px, 23.3vw, 470px); background-color: #ff781c; color: #302f29; display: flex; align-items: flex-end; }
@@ -385,7 +384,7 @@ body {
 .expertise-card__reveal { display: grid; grid-template-rows: 0fr; opacity: 0; visibility: hidden; transition: grid-template-rows 450ms ease, opacity 350ms ease, visibility 450ms; }
 .expertise-card__details { min-height: 0; overflow: hidden; transform: translateY(18px); transition: transform 450ms ease; }
 .expertise-card p { font-size: clamp(16px, 1.35vw, 28px); line-height: 1.35; padding-top: 22px; }
-.expertise-card button { display: inline-block; margin-top: 26px; padding: 12px 36px; border: 2px solid #ff6415; background: #f7f3eb; color: #302f29; font: 600 clamp(16px, 1.1vw, 22px)/1.2 "Century Gothic", "Avenir Next", Arial, sans-serif; cursor: pointer; }
+.expertise-card button { display: inline-block; margin-top: 26px; padding: 12px 36px; border: 2px solid #ff6415; background: #f7f3eb; color: #302f29; font: 600 clamp(16px, 1.1vw, 22px)/1.2 var(--font-family-site); cursor: pointer; }
 .expertise-card--brain .expertise-card__reveal, .expertise-card:hover .expertise-card__reveal, .expertise-card:focus-within .expertise-card__reveal { grid-template-rows: 1fr; opacity: 1; visibility: visible; }
 .expertise-card--brain .expertise-card__details, .expertise-card:hover .expertise-card__details, .expertise-card:focus-within .expertise-card__details { transform: translateY(0); }
 .expertise-card:hover::before, .expertise-card:focus-within::before { scale: 1.04; }
@@ -414,13 +413,13 @@ body {
 /* Questions about diagnosis and treatment. */
 .care-questions { position: relative; isolation: isolate; overflow: hidden; background: #2e2d27; color: #f7f3eb; padding-block: clamp(60px, 7vw, 140px) clamp(48px, 3.5vw, 72px); }
 
-.care-questions h2 { font: 400 clamp(30px, 2.6vw, 54px)/1.2 Georgia, "Times New Roman", serif; }
+.care-questions h2 { font: 400 clamp(30px, 2.6vw, 54px)/1.2 var(--font-family-site); }
 .care-questions h2 span { color: #ff6415; }
 .care-questions__intro { font-size: clamp(18px, 1.25vw, 26px); line-height: 1.4; margin-top: clamp(32px, 3.3vw, 68px); }
 .care-questions__grid { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: clamp(16px, 1.3vw, 28px); margin-top: clamp(32px, 3vw, 62px); }
 .care-question { border: 2px solid #ff6415; background: #2e2d27; }
 .care-question h3 { font-weight: 400; }
-.care-question h3 button { display: flex; align-items: center; justify-content: space-between; gap: 24px; width: 100%; padding: clamp(20px, 1.4vw, 30px) clamp(20px, 1.2vw, 26px); color: inherit; background: transparent; border: 0; cursor: pointer; text-align: left; font: 400 clamp(16px, 1.05vw, 22px)/1.4 "Century Gothic", "Avenir Next", Arial, sans-serif; }
+.care-question h3 button { display: flex; align-items: center; justify-content: space-between; gap: 24px; width: 100%; padding: clamp(20px, 1.4vw, 30px) clamp(20px, 1.2vw, 26px); color: inherit; background: transparent; border: 0; cursor: pointer; text-align: left; font: 400 clamp(16px, 1.05vw, 22px)/1.4 var(--font-family-site); }
 .care-question__icon { position: relative; flex: 0 0 20px; width: 20px; height: 20px; }
 .care-question__icon::before, .care-question__icon::after { content: ""; position: absolute; background: currentColor; border-radius: 1px; }
 .care-question__icon::before { width: 20px; height: 2px; left: 0; top: 9px; }
@@ -431,7 +430,7 @@ body {
 .care-question__answer p { padding: 0 clamp(20px, 1.2vw, 26px) 24px; font-size: clamp(16px, 1vw, 20px); line-height: 1.6; color: #e0ddd5; }
 .care-question.is-open .care-question__answer { grid-template-rows: 1fr; opacity: 1; visibility: visible; }
 .care-questions__summary { margin-top: clamp(36px, 3vw, 62px); text-align: center; font-size: clamp(17px, 1.25vw, 26px); line-height: 1.4; }
-.care-questions__read-all { display: block; margin: clamp(32px, 3vw, 62px) auto 0; padding: 12px 36px; border: 2px solid #ff6415; color: #302f29; background: #f7f3eb; cursor: pointer; font: 500 clamp(16px, 1vw, 20px)/1.2 "Century Gothic", "Avenir Next", Arial, sans-serif; }
+.care-questions__read-all { display: block; margin: clamp(32px, 3vw, 62px) auto 0; padding: 12px 36px; border: 2px solid #ff6415; color: #302f29; background: #f7f3eb; cursor: pointer; font: 500 clamp(16px, 1vw, 20px)/1.2 var(--font-family-site); }
 .care-questions__read-all:hover { background: #ff6415; color: #fff; }
 .care-question h3 button:focus-visible, .care-questions__read-all:focus-visible { outline: 3px solid #f7f3eb; outline-offset: 4px; }
 @media (max-width: 760px) {
@@ -456,7 +455,7 @@ body {
   opacity: 0.65;
   pointer-events: none;
 }
-.conditions-section h2 { text-align: center; margin-bottom: clamp(32px, 3vw, 64px); font: 400 clamp(30px, 2.6vw, 54px)/1.2 Georgia, "Times New Roman", serif; }
+.conditions-section h2 { text-align: center; margin-bottom: clamp(32px, 3vw, 64px); font: 400 clamp(30px, 2.6vw, 54px)/1.2 var(--font-family-site); }
 .conditions-section h2 span { color: #ff6415; }
 .conditions-section__slider { margin-left: 5.5%; }
 .conditions-section .swiper { overflow: visible; }
@@ -482,7 +481,7 @@ body {
   opacity: 0.28;
   pointer-events: none;
 }
-.recovery-footer h2 { font: 400 clamp(30px, 2.6vw, 54px)/1.2 Georgia, "Times New Roman", serif; }
+.recovery-footer h2 { font: 400 clamp(30px, 2.6vw, 54px)/1.2 var(--font-family-site); }
 .recovery-footer h2 span { color: #ff6415; }
 .recovery-footer__intro { max-width: 58%; }
 .recovery-footer__intro p { margin-top: clamp(32px, 3vw, 60px); font-size: clamp(17px, 1.25vw, 25px); line-height: 1.45; }
@@ -828,20 +827,20 @@ button, .button, .recovery-footer__booking {
 }
 .expertise-card > img.expertise-card__image { width: 100%; height: 100%; object-fit: cover; }
 .condition-card > img.condition-card__icon { object-fit: contain; }
-.contact-page__banner { display: block; width: 100%; height: auto; margin-top: 32px; }
+.contact-page__banner { display: block; width: 100%; height: auto; }
 
 /* Conditions share the reference's cream surface; only the active slide is orange. */
 .conditions-section .condition-card { background: #f7f3eb; }
 .conditions-section .swiper-slide-active .condition-card { background: linear-gradient(180deg, #ff9744 0%, #f7f3eb 100%); }
 .condition-card > div:not(.condition-card__icon) { font-size: clamp(16px, 1.2vw, 24px); line-height: 1.4; }
 
-.contact-page__banner { width: 100%; height: calc(min(89vw, 1760px) * 656 / 1717); object-fit: cover; margin-top: clamp(30px, 2.8vw, 56px); }
+.contact-page__banner { width: 100%; height: calc(min(89vw, 1760px) * 656 / 1717); object-fit: cover; }
 @media (max-width: 600px) {
   .contact-page__banner { height: calc(89vw * 9 / 16); }
 }
 
 .contact-page__enquiry { margin-top: clamp(48px, 5vw, 96px); }
-.contact-page__enquiry > h2 { text-align: center; font-family: Georgia, serif; font-weight: 400; font-size: clamp(28px, 2.4vw, 46px); }
+.contact-page__enquiry > h2 { text-align: center; font-weight: 400; font-size: clamp(28px, 2.4vw, 46px); }
 .contact-page__form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; max-width: 960px; margin: 32px auto 0; padding: clamp(24px, 3vw, 48px); border: 1px solid #ff6215; background: #fff9f1; }
 .contact-page__field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .contact-page__field--wide, .contact-page__form-note, .contact-page__form-status { grid-column: 1 / -1; }
@@ -916,3 +915,33 @@ button, .button, .recovery-footer__booking {
   .home-banner__pulse { opacity: .2; }
   .home-banner__ball { display: none; }
 }
+
+/* Shared inner-page spacing follows the About page. */
+:root {
+  --page-intro-offset: 178px;
+  --page-banner-gap: 32px;
+  --page-intro-copy-gap: 34px;
+}
+.about-page__intro,
+.faq-page__intro,
+.blogs-page__intro,
+.blog-detail main,
+.treatment-page__intro,
+.expertise-page__intro { padding-top: var(--page-intro-offset); }
+.about-page__media,
+.faq-page__banner,
+.blogs-page__banner,
+.blog-detail__hero,
+.treatment-page__banner,
+.expertise-page__banner,
+.contact-page__banner { margin-top: var(--page-banner-gap); }
+.about-page__bio,
+.blogs-page__intro p,
+.treatment-page__intro-copy,
+.expertise-page__intro p { margin-top: var(--page-intro-copy-gap); }
+@media (max-width: 900px) {
+  :root { --page-intro-offset: 54px; }
+}
+/* One shared font family for all pages and controls. */
+:root { --font-family-site: "Century Gothic", "Avenir Next", Arial, sans-serif; }
+h1, h2, h3, h4, h5, h6, button, input, select, textarea { font-family: var(--font-family-site); }

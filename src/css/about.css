@@ -1,11 +1,11 @@
 .about-page { position: relative; background: #f8f4ec; min-height: 100vh; }
 .about-page__intro, .about-page__approach { width: 90.5%; max-width: 1600px; margin-inline: auto; }
-.about-page__intro { padding-top: 178px; text-align: center; }
-.about-page h1, .about-page h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; line-height: 1.25; }
-.about-page h1 { font-size: clamp(32px, 3.15vw, 52px); margin-bottom: 32px; }
+.about-page__intro { text-align: center; }
+.about-page h1, .about-page h2 { font-weight: 400; line-height: 1.25; }
+.about-page h1 { font-size: clamp(32px, 3.15vw, 52px); }
 .about-page h1 span, .about-page h2 span { color: #ff6415; }
 .about-page__media { width: 100%; aspect-ratio: 1200 / 460; background: #d9d9d9; }
-.about-page__bio { max-width: 1080px; margin: 34px auto 0; --font-size-paragraph: 22px; font-size: var(--font-size-paragraph); line-height: 1.5; }
+.about-page__bio { max-width: 1080px; margin-inline: auto; --font-size-paragraph: 22px; font-size: var(--font-size-paragraph); line-height: 1.5; }
 .about-page__bio p + p { color: #8b8984; }
 .about-page__approach { position: relative; isolation: isolate; margin-top: 174px; padding-bottom: 140px; }
 .about-page__approach::before { content: ""; position: absolute; z-index: -1; inset: 0 calc((100% - 100vw) / 2); background: url("../images/grey-bg.png") right top / 100% auto no-repeat; background-position: right calc(-1 * clamp(100px, 14vw, 280px)); pointer-events: none; }
@@ -20,7 +20,6 @@
 .about-page__lead { font-weight: 500; margin-bottom: 22px; }
 .about-page__approach > h2, .about-page__approach > .about-page__description { text-align: center; }
 @media (max-width: 900px) {
-  .about-page__intro { padding-top: 54px; }
   .about-page__approach { margin-top: 90px; padding-bottom: 80px; }
   .about-page__media { aspect-ratio: 16 / 9; }
   .about-page__steps { margin-top: 40px; gap: 16px; }

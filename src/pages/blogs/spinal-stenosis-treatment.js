@@ -1,10 +1,29 @@
 import * as React from "react"
+import { graphql } from "gatsby"
 import BlogDetailPage, { Head as BlogHead } from "../../templates/blog-detail"
 
 const pageContext = { slug: "spinal-stenosis-treatment" }
 
-export default function BlogPage() {
-  return <BlogDetailPage pageContext={pageContext} />
+export default function BlogPage({ data }) {
+  return <BlogDetailPage data={data} pageContext={pageContext} />
 }
 
-export const Head = () => <BlogHead pageContext={pageContext} />
+export const Head = ({ data }) => <BlogHead data={data} pageContext={pageContext} />
+
+export const query = graphql`
+  query BlogSpinalStenosisTreatmentQuery {
+    allWpPost(sort: { date: DESC }) {
+      edges {
+        node {
+          id
+          slug
+          title
+          content
+          featuredImage {
+            node { mediaItemUrl altText }
+          }
+        }
+      }
+    }
+  }
+`

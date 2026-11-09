@@ -2,14 +2,16 @@ import * as React from "react"
 import ReadingCopy from "../components/ReadingCopy"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
-import { Link } from "gatsby"
-import { articles } from "../data/blogs"
+import { Link, graphql } from "gatsby"
+import { CmsText } from "../components/CmsContent"
+import { wordpressArticles } from "../data/blogs"
 import bannerArtwork from "../images/blog-page-banner-new.webp"
 import "../css/reset.css"
 import "../css/common.css"
 import "../css/blogs.css"
 
-export default function BlogsPage() {
+export default function BlogsPage({ data }) {
+  const articles = wordpressArticles(data?.allWpPost?.edges)
   return <div className="blogs-page">
     <Header />
     <main>
@@ -23,8 +25,8 @@ export default function BlogsPage() {
         <div className="blogs-page__grid">
           {articles.map(article => <article className="blogs-page__card" key={article.slug}>
             <Link to={article.href}>
-              <div className="blogs-page__image"><img src={article.image} alt="" loading="lazy" width="833" height="633" /></div>
-              <h3>{article.title}</h3>
+              {article.image ? <div className="blogs-page__image"><img src={article.image} alt={article.imageAlt || ""} loading="lazy" width="833" height="633" /></div> : <div className="blogs-page__image-placeholder" aria-hidden="true" />}
+              <CmsText as="h3" html={article.title} />
               <span className="blogs-page__read-more">Read article <span aria-hidden="true">↗</span></span>
             </Link>
           </article>)}
@@ -40,3 +42,21 @@ export const Head = () => <>
   <title>Blogs | Dr. Nimesh Jain</title>
   <meta name="description" content="Explore brain, spine and neurological care topics from Dr. Nimesh Jain." />
 </>
+
+export const query = graphql`
+  query BlogsPageQuery {
+    allWpPost(sort: { date: DESC }) {
+      edges {
+        node {
+          id
+          slug
+          title
+          content
+          featuredImage {
+            node { mediaItemUrl altText }
+          }
+        }
+      }
+    }
+  }
+`
